@@ -106,7 +106,10 @@ public final class MapService {
         }, done);
     }
 
-    /** Pastes a schematic so that its origin lands on {@code to}. */
+    /**
+     * Pastes a schematic so that its origin lands on {@code to}. Air is skipped: a slot is only handed out again
+     * after it was cleared to air (SlotPool keeps failed slots busy), so only the real blocks need writing.
+     */
     public void paste(File file, World w, BlockPos to, Consumer<Throwable> done) {
         async(() -> {
             ClipboardFormat fmt = ClipboardFormats.findByFile(file);
@@ -116,7 +119,7 @@ public final class MapService {
                 clip = reader.read();
                 try (EditSession es = session(w)) {
                     Operation op = new ClipboardHolder(clip).createPaste(es).to(bv(to))
-                            .ignoreAirBlocks(false).copyEntities(false).build();
+                            .ignoreAirBlocks(true).copyEntities(false).build();
                     Operations.complete(op);
                 }
             } catch (Exception e) {
