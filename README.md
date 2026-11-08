@@ -43,6 +43,21 @@ Phó bản theo phòng cho BoxPvP. Paper 1.21.1, Java 21.
 | n4 | Giết mob `Bone_King` x1 | Hoàn thành |
 | n5 (rương) | Tương tác, bật "Tính riêng từng người" | Rương thưởng `vidu_ruong` |
 
+### Phòng khoá (đánh hết quái mới đi tiếp)
+
+1. Dựng tường ở cửa vào và cửa ra **ở vị trí đóng** (bịt kín lối), chọn bằng rìu vàng:
+   `/pba region add vao2`, `/pba region add ra2`. Chọn cả phòng: `/pba region add phong2`.
+2. Node A (sàn trong phòng): trigger **Vào vùng** `region = phong2`, `players = 1` →
+   **Khoá phòng** `room = phong2`, `entrances = vao2`, `exits = ra2`, `style = down|up|side`, `seconds = 2` →
+   **Chuyển ải** `phong2`.
+3. Node B: trigger **Phòng khoá kín** `room = phong2` → **Spawn mob** (thêm node spawn khác nếu muốn nhiều chỗ).
+4. Node C (tuỳ chọn): trigger **Dọn sạch ải** → **Thông báo** title, **Đặt checkpoint**...
+   Cửa vào và cửa ra tự mở khi dọn sạch ải.
+
+Khi phó bản bắt đầu, các tường này tự được gỡ nên lối đi rộng như map gốc. Người chết trong phòng hồi sinh ở checkpoint
+bên ngoài và chờ đội đánh xong. Nếu không còn ai sống trong phòng, cửa vào mở lại để vào đánh tiếp (quái giữ nguyên).
+Tường muốn đóng sẵn từ đầu: `/pba region wall <vùng> closed`.
+
 ## Lệnh
 
 Người chơi `/pb`: `create`, `join`, `invite`, `accept`, `deny`, `kick`, `leader`, `public`, `start`, `leave`, `room`, `rewards`.

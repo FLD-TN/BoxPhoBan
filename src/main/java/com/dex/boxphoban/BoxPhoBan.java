@@ -58,6 +58,7 @@ public final class BoxPhoBan extends JavaPlugin {
     private RoomManager rooms;
     private InstanceManager instances;
     private NodeEngine engine;
+    private com.dex.boxphoban.engine.Walls walls;
     private EditorService editor;
     private MenuService menus;
     private Words words;
@@ -105,6 +106,7 @@ public final class BoxPhoBan extends JavaPlugin {
         sessions = new SessionStore(new File(getDataFolder(), "data/sessions"), settings, getLogger());
         entry = new EntryService(settings, db, tickets, economy, templates, messages);
         engine = new NodeEngine(this);
+        walls = new com.dex.boxphoban.engine.Walls(this);
         instances = new InstanceManager(this);
         rooms = new RoomManager(this);
         editor = new EditorService(this);
@@ -242,6 +244,10 @@ public final class BoxPhoBan extends JavaPlugin {
 
     public NodeEngine engine() {
         return engine;
+    }
+
+    public com.dex.boxphoban.engine.Walls walls() {
+        return walls;
     }
 
     public EditorService editor() {

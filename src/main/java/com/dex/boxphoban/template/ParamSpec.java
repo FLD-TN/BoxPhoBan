@@ -3,7 +3,7 @@ package com.dex.boxphoban.template;
 /** One editable parameter of a trigger / condition / action. */
 public record ParamSpec(String key, String label, Kind kind, String def, String hint) {
 
-    public enum Kind { TEXT, INT, DOUBLE, BOOL, MOB, REGION, POINT, STAGE, SOUND, CHOICE, NODE }
+    public enum Kind { TEXT, INT, DOUBLE, BOOL, MOB, REGION, REGIONS, POINT, STAGE, SOUND, CHOICE, NODE }
 
     public static ParamSpec p(String key, String label, Kind kind, String def, String hint) {
         return new ParamSpec(key, label, kind, def, hint);

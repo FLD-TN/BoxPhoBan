@@ -328,6 +328,19 @@ public final class AdminCommand implements TabExecutor {
                 plugin.editor().save(t, p);
                 send(p, "editor.region-removed", "name", args[2]);
             }
+            case "wall" -> {
+                if (args.length < 4 || !t.regions.containsKey(args[2].toLowerCase(Locale.ROOT))
+                        || !(args[3].equalsIgnoreCase("open") || args[3].equalsIgnoreCase("closed"))) {
+                    send(p, "usage", "usage", "/pba region wall <vùng> open|closed");
+                    return;
+                }
+                String name = args[2].toLowerCase(Locale.ROOT);
+                boolean closed = args[3].equalsIgnoreCase("closed");
+                if (closed) t.wallsClosedAtStart.add(name);
+                else t.wallsClosedAtStart.remove(name);
+                plugin.editor().save(t, p);
+                send(p, closed ? "editor.wall-start-closed" : "editor.wall-start-open", "name", name);
+            }
             default -> send(p, "editor.region-list", "list", t.regions.isEmpty() ? "-" : String.join(", ", t.regions.keySet()));
         }
     }
@@ -420,8 +433,9 @@ public final class AdminCommand implements TabExecutor {
                 if (args.length == 2) for (Instance in : plugin.instances().all()) options.add(String.valueOf(in.id));
             }
             case "region" -> {
-                if (args.length == 2) options.addAll(List.of("add", "remove", "list"));
-                else if (args.length == 3 && args[1].equalsIgnoreCase("remove") && sender instanceof Player p
+                if (args.length == 2) options.addAll(List.of("add", "remove", "list", "wall"));
+                else if (args.length == 4 && args[1].equalsIgnoreCase("wall")) options.addAll(List.of("open", "closed"));
+                else if (args.length == 3 && (args[1].equalsIgnoreCase("remove") || args[1].equalsIgnoreCase("wall")) && sender instanceof Player p
                         && plugin.editor().editing(p.getUniqueId())) {
                     options.addAll(plugin.editor().session(p.getUniqueId()).template.regions.keySet());
                 }

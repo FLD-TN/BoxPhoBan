@@ -66,6 +66,8 @@ public final class DungeonTemplate {
     public Point start;
     public final LinkedHashMap<String, Point> points = new LinkedHashMap<>();
     public final LinkedHashMap<String, Box> regions = new LinkedHashMap<>();
+    /** Wall regions that stay closed when the instance starts (default: walls start open). */
+    public final java.util.Set<String> wallsClosedAtStart = new java.util.LinkedHashSet<>();
     public final List<Stage> stages = new ArrayList<>();
     public final LinkedHashMap<String, Node> nodes = new LinkedHashMap<>();
     public int nextNodeId = 1;
@@ -196,6 +198,8 @@ public final class DungeonTemplate {
             Box b = Box.parse(rs.getString(k));
             if (b != null) regions.put(k, b);
         }
+        wallsClosedAtStart.clear();
+        wallsClosedAtStart.addAll(c.getStringList("walls-closed-at-start"));
         stages.clear();
         for (Map<?, ?> m : c.getMapList("stages")) {
             Object id = m.get("id");
@@ -255,6 +259,7 @@ public final class DungeonTemplate {
         c.set("next-node-id", nextNodeId);
         for (Map.Entry<String, Point> e : points.entrySet()) c.set("points." + e.getKey(), e.getValue().toString());
         for (Map.Entry<String, Box> e : regions.entrySet()) c.set("regions." + e.getKey(), e.getValue().toString());
+        c.set("walls-closed-at-start", new ArrayList<>(wallsClosedAtStart));
         List<Map<String, Object>> st = new ArrayList<>();
         for (Stage s : stages) {
             Map<String, Object> m = new LinkedHashMap<>();

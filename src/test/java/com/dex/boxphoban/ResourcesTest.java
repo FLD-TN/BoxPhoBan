@@ -39,7 +39,7 @@ class ResourcesTest {
     /** Dotted literals that are config paths, permissions or files, not text keys. */
     private static boolean notTextKey(String k) {
         String[] prefixes = {"boxphoban.", "commands.", "disconnect.", "end.", "entry.cooldown.", "entry.ticket.", "fallback-location.",
-                "lives.", "limits.", "players.", "protection.", "spectator.", "world.", "trigger."};
+                "lives.", "limits.", "players.", "protection.", "spectator.", "world.", "trigger.", "block.", "entity."};
         for (String p : prefixes) if (k.startsWith(p)) return true;
         return k.endsWith(".yml") || k.endsWith(".schem") || k.equals("entry.cost-money") || k.equals("entry.daily-limit")
                 || k.equals("entry.permission") || k.equals("entry.required-clears") || k.equals("room.idle-timeout")

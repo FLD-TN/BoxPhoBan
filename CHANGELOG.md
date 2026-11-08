@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.0 (2026-11-08)
+
+Tường chuyển động và khoá phòng.
+
+- Hành động **Đóng tường / Mở tường**: tường trượt mượt (BlockDisplay) theo 3 kiểu: `down` hạ từ trần như cửa song sắt,
+  `up` trồi từ sàn, `side` hai nửa trượt ngang khép vào giữa. Thời gian và âm thanh chỉnh được.
+  Lúc đóng, block chắn vô hình đặt ngay nên không ai lọt qua; ai đứng giữa lối bị đẩy về chỗ node.
+- Vùng tường dựng ở vị trí ĐÓNG trong editor. Khi phó bản bắt đầu tường được gỡ (lối đi thoáng), trừ vùng đặt
+  `/pba region wall <vùng> closed`.
+- Hành động **Khoá phòng** (vùng phòng, cửa vào, cửa ra): người đầu tiên vào thì cửa ra đóng; mọi người còn sống đã vào
+  thì cửa vào đóng; không còn ai sống trong phòng thì cửa vào mở lại (tránh kẹt khi cả đội chết); dọn sạch ải thì
+  mở hết. Hành động **Mở khoá phòng** để mở tay.
+- Trigger **Phòng khoá kín** (cửa vào vừa đóng, dùng để spawn quái) và **Dọn sạch ải** (mọi quái spawn trong ải đã chết,
+  chờ cả các node có độ trễ).
+- Paste phòng bỏ qua block không khí (nhanh hơn nhiều với map rộng).
+
 ## 0.1.0 (2026-11-08)
 
 Bản đầu tiên theo [PHOBAN_SPEC.md](PHOBAN_SPEC.md).

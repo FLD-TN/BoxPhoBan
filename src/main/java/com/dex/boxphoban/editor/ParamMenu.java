@@ -76,7 +76,7 @@ public final class ParamMenu extends Menu {
 
     private String options(ParamSpec s) {
         return switch (s.kind()) {
-            case REGION -> t.regions.isEmpty() ? "-" : String.join(", ", t.regions.keySet());
+            case REGION, REGIONS -> t.regions.isEmpty() ? "-" : String.join(", ", t.regions.keySet());
             case POINT -> t.points.isEmpty() ? "-" : String.join(", ", t.points.keySet());
             case STAGE -> t.stages.isEmpty() ? "-" : String.join(", ", t.stages.stream().map(st -> st.id).toList());
             case NODE -> t.nodes.isEmpty() ? "-" : String.join(", ", t.nodes.keySet());
@@ -93,6 +93,9 @@ public final class ParamMenu extends Menu {
         switch (s.kind()) {
             case REGION -> {
                 if (!t.regions.containsKey(v)) return "input.no-region";
+            }
+            case REGIONS -> {
+                for (String r : v.split(",")) if (!t.regions.containsKey(r.trim())) return "input.no-region";
             }
             case POINT -> {
                 if (!t.points.containsKey(v)) return "input.no-point";

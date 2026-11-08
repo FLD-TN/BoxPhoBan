@@ -172,6 +172,7 @@ public final class InstanceManager {
             return;
         }
         in.sharedLives = t.livesMode == DungeonTemplate.LivesMode.SHARED ? t.lives : 0;
+        plugin.walls().prepare(in);
         in.phase = Instance.Phase.RUNNING;
         in.startMs = System.currentTimeMillis();
         ticketChunks(in);
@@ -202,6 +203,9 @@ public final class InstanceManager {
         if (idx < 0 || idx >= in.template.stages.size()) return;
         in.stageIndex = idx;
         in.stageStartMs = System.currentTimeMillis();
+        in.stageMobs.clear();
+        in.stageSpawned = false;
+        in.stageCleared = false;
         var st = in.template.stages.get(idx);
         for (Player p : in.viewers()) {
             msg().title(p, "dungeon.stage-title", "dungeon.stage-subtitle", 5, 40, 10,
@@ -254,6 +258,15 @@ public final class InstanceManager {
                 if (e == null || !e.isValid() || e.isDead()) plugin.engine().onMobGone(in, mob, false, null);
             }
             if (in.phase != Instance.Phase.RUNNING) continue;
+            if (in.stageSpawned && !in.stageCleared && in.stageMobs.isEmpty() && in.pendingDelayed == 0) {
+                in.stageCleared = true;
+                if (!in.locks.isEmpty()) {
+                    plugin.walls().unlock(in, null);
+                    for (Player p : in.onlineMembers()) msg().send(p, "dungeon.stage-cleared");
+                }
+                plugin.engine().onStageCleared(in);
+                if (in.phase != Instance.Phase.RUNNING) continue;
+            }
             updateBossBar(in);
             plugin.engine().tickTimers(in);
         }
@@ -276,6 +289,7 @@ public final class InstanceManager {
         for (Instance in : new ArrayList<>(instances.values())) {
             if (in.phase != Instance.Phase.RUNNING) continue;
             plugin.engine().tickArea(in);
+            plugin.walls().tick(in);
             Box allowed = in.box.grow(margin);
             for (Player p : in.viewers()) {
                 if (p.getGameMode() != GameMode.SPECTATOR) continue;
@@ -608,6 +622,7 @@ public final class InstanceManager {
     }
 
     private void removeMobs(Instance in) {
+        plugin.walls().clear(in);
         for (UUID mob : new ArrayList<>(in.mobs.keySet())) {
             Entity e = Bukkit.getEntity(mob);
             if (e != null) e.remove();

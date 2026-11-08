@@ -92,7 +92,9 @@ public final class NodeEngine {
         if (who != null) st.firedPlayers.add(who.getUniqueId());
         if (n.delay > 0) {
             UUID wu = who == null ? null : who.getUniqueId();
+            in.pendingDelayed++;
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                in.pendingDelayed = Math.max(0, in.pendingDelayed - 1);
                 if (in.phase != Instance.Phase.RUNNING) return;
                 run(in, n, wu == null ? null : Bukkit.getPlayer(wu));
             }, n.delay);
@@ -115,6 +117,19 @@ public final class NodeEngine {
             }
         }
         fire(in, TriggerType.STAGE_START, null, n -> n.trigger.s("stage", "").equalsIgnoreCase(stageId));
+    }
+
+    public void onRoomSealed(Instance in, String room) {
+        fire(in, TriggerType.ROOM_SEALED, null, n -> n.trigger.s("room", "").equalsIgnoreCase(room));
+    }
+
+    /** Called once per stage when every mob spawned during it is dead (and no delayed node is pending). */
+    public void onStageCleared(Instance in) {
+        String current = in.stage() == null ? "" : in.stage().id;
+        fire(in, TriggerType.STAGE_CLEARED, null, n -> {
+            String want = n.trigger.s("stage", "");
+            return want.isEmpty() || want.equalsIgnoreCase(current);
+        });
     }
 
     public void onPlayerDeath(Instance in, Player p) {
@@ -191,6 +206,7 @@ public final class NodeEngine {
     public void onMobGone(Instance in, UUID entity, boolean killed, Player killer) {
         String nodeId = in.mobs.remove(entity);
         String type = in.mobTypes.remove(entity);
+        in.stageMobs.remove(entity);
         if (nodeId == null) return;
         if (entity.equals(in.boss)) {
             in.boss = null;
@@ -319,6 +335,25 @@ public final class NodeEngine {
                     for (Player p : in.viewers()) in.bossBar.addPlayer(p);
                 }
             }
+            case WALL_CLOSE, WALL_OPEN -> {
+                boolean close = type == ActionType.WALL_CLOSE;
+                int ticks = (int) Math.round(Math.max(0.05, a.d("seconds", 2)) * 20);
+                for (String r : Walls.names(a.s("region", ""))) {
+                    plugin.walls().move(in, r, close, Walls.style(a.s("style", "down")), ticks, a.s("sound", ""),
+                            in.blockCenter(n.pos));
+                }
+            }
+            case ROOM_LOCK -> {
+                String room = a.s("room", "");
+                if (!t.regions.containsKey(room)) {
+                    warnOnce(in, "Node " + n.id + ": không có vùng phòng " + room);
+                    return;
+                }
+                int ticks = (int) Math.round(Math.max(0.05, a.d("seconds", 2)) * 20);
+                plugin.walls().lock(in, new Walls.Lock(room, Walls.names(a.s("entrances", "")), Walls.names(a.s("exits", "")),
+                        Walls.style(a.s("style", "down")), ticks, a.s("sound", ""), in.blockCenter(n.pos)));
+            }
+            case ROOM_UNLOCK -> plugin.walls().unlock(in, a.s("room", ""));
             case DOOR_OPEN -> door(in, a.s("region", ""), true, null);
             case DOOR_CLOSE -> door(in, a.s("region", ""), false, a.s("material", ""));
             case CHECKPOINT -> {
@@ -447,6 +482,8 @@ public final class NodeEngine {
         le.setRemoveWhenFarAway(false);
         in.mobs.put(le.getUniqueId(), n.id);
         in.mobTypes.put(le.getUniqueId(), mobId);
+        in.stageMobs.add(le.getUniqueId());
+        in.stageSpawned = true;
         Instance.NodeState st = in.state(n.id);
         st.spawned.add(le.getUniqueId());
         st.everSpawned = true;

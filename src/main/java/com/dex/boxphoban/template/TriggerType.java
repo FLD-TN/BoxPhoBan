@@ -32,7 +32,11 @@ public enum TriggerType {
             p("from", "Tính từ", CHOICE, "dungeon", "dungeon|stage"),
             p("stage", "Ải", STAGE, "", "chỉ khi tính từ ải, để trống = ải bất kỳ")),
     SIGNAL("Tín hiệu", Material.REDSTONE_TORCH, "Node khác gửi tín hiệu",
-            p("name", "Tên tín hiệu", TEXT, "", ""));
+            p("name", "Tên tín hiệu", TEXT, "", "")),
+    ROOM_SEALED("Phòng khoá kín", Material.IRON_BARS, "Mọi người còn sống đã vào phòng và cửa vào đóng",
+            p("room", "Phòng", REGION, "", "vùng phòng của hành động Khoá phòng")),
+    STAGE_CLEARED("Dọn sạch ải", Material.TOTEM_OF_UNDYING, "Mọi quái spawn trong ải hiện tại đã chết",
+            p("stage", "Ải", STAGE, "", "để trống = ải bất kỳ"));
 
     public final String display;
     public final Material icon;

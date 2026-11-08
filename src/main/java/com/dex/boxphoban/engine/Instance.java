@@ -77,6 +77,14 @@ public final class Instance {
     public BossBar bossBar;
     public UUID boss;
     public final Set<Long> chunkTickets = new HashSet<>();
+    public final Map<String, Walls.Wall> walls = new HashMap<>();
+    public final List<Walls.Lock> locks = new ArrayList<>();
+    /** Mobs spawned during the current stage that are still alive. */
+    public final Set<UUID> stageMobs = new HashSet<>();
+    public boolean stageSpawned;
+    public boolean stageCleared;
+    /** Node runs waiting for their delay (a delayed spawn keeps the stage from counting as cleared). */
+    public int pendingDelayed;
 
     public Instance(int id, DungeonTemplate template, Difficulty difficulty, int slot, BlockPos origin, World world, boolean test) {
         this.id = id;
