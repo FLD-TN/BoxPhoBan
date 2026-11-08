@@ -15,6 +15,8 @@ Tường chuyển động và khoá phòng.
 - Trigger **Phòng khoá kín** (cửa vào vừa đóng, dùng để spawn quái) và **Dọn sạch ải** (mọi quái spawn trong ải đã chết,
   chờ cả các node có độ trễ).
 - Paste phòng bỏ qua block không khí (nhanh hơn nhiều với map rộng).
+- Trigger **Tương tác** và **Dùng chìa** có thêm `region`: bấm block nào trong vùng cũng được (ví dụ cả bức cổng).
+  Nhận chìa thì cả đội được báo ai đang giữ chìa.
 
 ## 0.1.0 (2026-11-08)
 

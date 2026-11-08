@@ -122,8 +122,13 @@ dungeon:
   stage-cleared: '&#7CFC9A✔ Đã dọn sạch quái, lối đi đã mở'
   need-key: '&#FF6B6BCần chìa khoá để mở'
   key-received: '&#7CFC9A✔ Bạn nhận được %key%'
+  key-received-other: '&#FFD166(!) &f%player% &7đã nhặt được %key%'
   key-lore:
     - '&#BFC7D5Chỉ dùng trong phó bản này'
+    - '&#BFC7D5Chuột phải vào cổng để mở'
+    - ''
+    - '&#FFD166Lưu ý:'
+    - '&7• Tự mất khi rời hoặc hết phó bản'
   lives-added: '&#7CFC9A✔ Phòng được cộng &f%amount% &7mạng'
   lives-removed: '&#FFD166(!) &7Phòng bị trừ &f%amount% &7mạng'
   time-warning: '&#FFD166(!) &7Còn &f%time% &7để hoàn thành phó bản'

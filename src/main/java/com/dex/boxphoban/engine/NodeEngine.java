@@ -240,6 +240,19 @@ public final class NodeEngine {
         if (in.phase != Instance.Phase.RUNNING) return false;
         var rel = in.toRelative(com.dex.boxphoban.util.BlockPos.of(block));
         Node n = in.template.nodeAt(rel);
+        if (n != null && n.triggerType() != TriggerType.INTERACT && n.triggerType() != TriggerType.KEY_USE) n = null;
+        if (n == null) {
+            // a node may listen on a whole region (e.g. every block of a locked gate)
+            for (Node c : in.template.nodes.values()) {
+                TriggerType ct = c.triggerType();
+                if (ct != TriggerType.INTERACT && ct != TriggerType.KEY_USE) continue;
+                Box r = in.template.regions.get(c.trigger.s("region", ""));
+                if (r != null && r.contains(rel)) {
+                    n = c;
+                    break;
+                }
+            }
+        }
         if (n == null) return false;
         TriggerType t = n.triggerType();
         if (t == TriggerType.INTERACT) {
@@ -415,6 +428,12 @@ public final class NodeEngine {
                 for (Player v : to) {
                     v.getInventory().addItem(key.clone()).values().forEach(l -> v.getWorld().dropItem(v.getLocation(), l));
                     plugin.messages().send(v, "dungeon.key-received", "key", a.s("name", "Chìa khoá"));
+                }
+                if (to.size() == 1) {
+                    for (Player v : in.onlineMembers()) {
+                        if (!v.equals(to.get(0))) plugin.messages().send(v, "dungeon.key-received-other",
+                                "player", to.get(0).getName(), "key", a.s("name", "Chìa khoá"));
+                    }
                 }
             }
             case LIVES -> plugin.instances().addLives(in, a.i("amount", 1));

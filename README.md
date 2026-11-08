@@ -58,6 +58,19 @@ Khi phó bản bắt đầu, các tường này tự được gỡ nên lối đ
 bên ngoài và chờ đội đánh xong. Nếu không còn ai sống trong phòng, cửa vào mở lại để vào đánh tiếp (quái giữ nguyên).
 Tường muốn đóng sẵn từ đầu: `/pba region wall <vùng> closed`.
 
+### Cổng cần chìa khoá
+
+1. Xây cổng ở vị trí đóng, `/pba region add cong1`, rồi `/pba region wall cong1 closed` (cổng đóng sẵn từ đầu).
+2. Lấy chìa, chọn một trong hai:
+   - Quái giữ chìa: node trigger **Giết mob** `mob = <id quái giữ chìa>` → **Cho chìa** `key = chia1`, `who = trigger`
+     (người hạ quái nhận chìa, kể cả khi pet hạ).
+   - Rương có chìa: node đặt trên block rương, trigger **Tương tác** → **Cho chìa** `key = chia1`, `who = trigger`.
+3. Node mở cổng: trigger **Dùng chìa** `key = chia1`, `region = cong1` (bấm block nào của cổng cũng được) →
+   **Mở tường** `region = cong1`, `style = up|down|side`.
+
+Chìa chỉ dùng được trong đúng lượt phó bản đó (mỗi lượt có mã riêng), không vứt ra được, và bị gỡ khỏi túi khi rời,
+thua, thắng, hết giờ, thoát game hay server sập.
+
 ## Lệnh
 
 Người chơi `/pb`: `create`, `join`, `invite`, `accept`, `deny`, `kick`, `leader`, `public`, `start`, `leave`, `room`, `rewards`.
