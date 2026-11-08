@@ -1,0 +1,79 @@
+# Cài đặt phó bản %id%. File này admin tự sửa, plugin không bao giờ ghi đè.
+# Sau khi sửa: /pba reload
+# Phần map + logic (điểm, vùng, ải, node) nằm ở nodes.yml và do editor trong game ghi.
+
+# false = ẩn khỏi GUI, không ai tạo phòng được (admin vẫn /pba test được)
+enabled: false
+display: '&#5EEAD4%id%'
+# Màu chủ đạo của phó bản trong GUI
+color: '&#5EEAD4'
+icon: IRON_SWORD
+# Mô tả ngắn, khoảng 30 ký tự mỗi dòng
+description:
+  - 'Mô tả phó bản'
+
+players:
+  min: 1
+  max: 4
+
+# Số phòng của phó bản này được chạy cùng lúc (còn bị giới hạn bởi limits.max-instances trong config.yml)
+max-instances: 5
+
+entry:
+  ticket:
+    # false = vào miễn phí
+    enabled: false
+    # id vé trong tickets.yml
+    id: ''
+    amount: 1
+    # CREATOR = chỉ chủ phòng trả vé | EVERY_MEMBER = mỗi người trả vé
+    consume: CREATOR
+  # Phí $ (Vault), 0 = tắt. Ai trả giống như vé (consume)
+  cost-money: 0
+  # Để trống = ai cũng vào được
+  permission: ''
+  # Phải clear các phó bản này trước (id)
+  required-clears: []
+  cooldown:
+    # NONE | TIMER | DAILY | WEEKLY
+    type: NONE
+    # Với TIMER
+    minutes: 30
+    # Với DAILY / WEEKLY (giờ theo timezone trong config.yml). Cũng là giờ reset của daily-limit
+    reset-hour: 0
+    # Với WEEKLY: MONDAY ... SUNDAY
+    reset-day: MONDAY
+    # START = tính khi bắt đầu | FINISH = chỉ khi clear | LEAVE = mọi lúc kết thúc lượt chơi (kể cả rời, thua)
+    apply-on: FINISH
+  # Số lượt mỗi ngày, 0 = không giới hạn (tính khi bắt đầu)
+  daily-limit: 0
+
+lives:
+  # SHARED = mạng chung cả phòng | PERSONAL = mạng riêng mỗi người | NONE = không có mạng (chết là thành khán giả)
+  mode: SHARED
+  amount: 5
+  # Giây chờ trước khi hồi sinh ở checkpoint
+  respawn-delay: 5
+
+# Người đã thành khán giả nhưng vẫn ở trong phó bản lúc thắng vẫn nhận thưởng
+reward-dead-players: true
+
+# Mỗi độ khó: level MythicMobs khi spawn, nhân máu / sát thương của quái, thời gian giới hạn (giây, 0 = không),
+# bảng thưởng trong rewards.yml
+difficulties:
+  thuong:
+    display: '&#7CFC9AThường'
+    icon: LIME_DYE
+    mob-level: 1
+    health-multiplier: 1.0
+    damage-multiplier: 1.0
+    time-limit: 900
+    rewards: '%id%_thuong'
+  kho:
+    display: '&#FFB86BKhó'
+    icon: ORANGE_DYE
+    mob-level: 3
+    health-multiplier: 1.8
+    damage-multiplier: 1.5
+    time-limit: 900
+    rewards: '%id%_kho'

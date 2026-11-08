@@ -1,0 +1,29 @@
+name: BoxPhoBan
+version: '${version}'
+main: com.dex.boxphoban.BoxPhoBan
+api-version: '1.21'
+author: dex
+description: Phó bản theo phòng cho BoxPvP
+depend: [MythicMobs, FastAsyncWorldEdit]
+softdepend: [PlaceholderAPI, Vault, BoxCore, BoxPet]
+
+commands:
+  phoban:
+    description: Phó bản
+    aliases: [pb]
+  phobanadmin:
+    description: Quản lý phó bản
+    aliases: [pba]
+    permission: boxphoban.admin
+
+permissions:
+  boxphoban.use:
+    default: true
+  boxphoban.admin:
+    default: op
+  boxphoban.bypass.commands:
+    default: op
+  boxphoban.bypass.cooldown:
+    default: op
+  boxphoban.bypass.ticket:
+    default: op

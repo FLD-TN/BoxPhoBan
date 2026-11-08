@@ -1,0 +1,27 @@
+# Bảng thưởng khi clear. Mỗi độ khó trong dungeon.yml trỏ tới một bảng (difficulties.<id>.rewards).
+#   money: tiền (Vault)   gem: gem (BoxCore)   commands: lệnh console, %player% = người nhận
+#   items: thêm bằng /pba reward additem <bảng> (lấy item trên tay)
+#   first-clear: thưởng thêm lần clear đầu tiên của mỗi người
+# Túi đầy thì item thừa vào kho thưởng chờ (/pb rewards), không rơi ra đất.
+
+vidu_thuong:
+  money: 5000
+  gem: 0
+  commands: []
+  items: []
+  first-clear:
+    money: 20000
+    gem: 10
+    commands: []
+    items: []
+
+vidu_kho:
+  money: 12000
+  gem: 5
+  commands: []
+  items: []
+  first-clear:
+    money: 40000
+    gem: 25
+    commands: []
+    items: []

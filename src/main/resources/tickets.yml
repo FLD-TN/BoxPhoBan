@@ -1,0 +1,14 @@
+# Vé vào phó bản. Plugin nhận vé bằng dữ liệu ẩn trong item, đổi tên item khác thành vé sẽ không dùng được.
+# Phát vé: /pba ticket give <người chơi> <id> [số lượng]
+# Dùng trong dungeons/<id>/dungeon.yml: entry.ticket.id
+
+tickets:
+  ve_pho_ban:
+    material: PAPER
+    custom-model-data: 0
+    name: '&#5EEAD4Vé phó bản'
+    lore:
+      - '&#BFC7D5Dùng để vào phó bản'
+      - ''
+      - '&#FFD166Lưu ý:'
+      - '&7• Chỉ trừ khi phòng bắt đầu'

@@ -1,0 +1,20 @@
+# Bảng loot cho hành động "Rương thưởng" của node. Mỗi người mở thấy loot riêng.
+# Đồ vào túi thưởng phó bản và chỉ được trao khi phòng thắng. Rời giữa chừng là mất.
+#   rolls: số lần quay   entries: weight (trọng số), min / max số lượng, item hoặc material
+# Thêm item trên tay: /pba loot additem <bảng> [trọng số]
+
+vidu_ruong:
+  rolls: 3
+  entries:
+    - weight: 10
+      material: IRON_INGOT
+      min: 2
+      max: 5
+    - weight: 5
+      material: GOLD_INGOT
+      min: 1
+      max: 3
+    - weight: 1
+      material: DIAMOND
+      min: 1
+      max: 1

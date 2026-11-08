@@ -1,0 +1,65 @@
+# BoxPhoBan - cài đặt chung
+# Key thiếu sẽ tự lấy mặc định trong jar, nên khi cập nhật chỉ cần thay jar.
+
+world:
+  # World void do plugin tự tạo, chứa mọi phòng và ô editor. Đổi phần world.* cần restart
+  name: boxphoban
+  # Khoảng cách giữa các ô (block). Map của một phó bản không được rộng quá (spacing / 2 - 32) mỗi chiều
+  grid-spacing: 1000
+  # Số ô mỗi hàng trước khi xuống hàng mới
+  grid-columns: 32
+
+limits:
+  # Tổng số phòng chạy cùng lúc trên server (mỗi phó bản còn có max-instances riêng)
+  max-instances: 20
+
+room:
+  # Phòng chờ quá lâu (giây) không ai thao tác thì tự giải tán
+  idle-timeout: 300
+  # Lời mời hết hạn sau (giây)
+  invite-timeout: 60
+
+disconnect:
+  # Thoát game giữa phó bản: có bấy nhiêu giây để quay lại, quá thì bị loại (không nhận thưởng)
+  grace-seconds: 180
+
+commands:
+  # Lệnh dùng được trong phó bản (phoban / pb luôn được phép). Quyền boxphoban.bypass.commands bỏ qua
+  whitelist:
+    - msg
+    - r
+    - tell
+    - w
+
+protection:
+  # Đánh nhau giữa người trong cùng phòng
+  pvp: false
+  # Không mở rương / thùng có sẵn trong map (rương thưởng của node vẫn dùng được)
+  block-containers: true
+  # Không vứt đồ trong phó bản (chìa khoá luôn bị chặn)
+  block-item-drop: true
+  # Chặn chuột phải vào người chơi khác (mời trade bằng shift + chuột phải)
+  block-player-interact: true
+
+spectator:
+  # Khán giả bay ra khỏi khung map quá bấy nhiêu block thì bị kéo về
+  bounds-margin: 8
+
+end:
+  # Chờ bao nhiêu giây sau khi thắng / thua rồi mới đưa mọi người về
+  win-delay-seconds: 5
+  fail-delay-seconds: 3
+  # Mở GUI kết quả sau khi về (tick)
+  result-menu-delay-ticks: 10
+
+# Giờ reset cooldown DAILY / WEEKLY và lượt mỗi ngày
+timezone: Asia/Ho_Chi_Minh
+
+# Chỗ đưa người chơi về khi vị trí cũ không còn (world bị xoá). Để trống world = spawn của world chính
+fallback-location:
+  world: ''
+  x: 0
+  y: 64
+  z: 0
+  yaw: 0
+  pitch: 0

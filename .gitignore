@@ -1,0 +1,9 @@
+.gradle/
+build/
+.idea/
+*.iml
+out/
+.snapshot-*/
+# third-party jars (copy them locally, see README)
+libs/MythicMobs-*.jar
+libs/FastAsyncWorldEdit-*.jar

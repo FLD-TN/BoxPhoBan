@@ -1,0 +1,405 @@
+# BoxPhoBan - chữ trong GUI
+#
+# Chuẩn BoxCore: tên không in đậm, dòng mô tả &#BFC7D5, mục &#FFD166Thông tin:, dòng "&7• Nhãn: &fgiá trị",
+# dòng hành động cuối cùng dạng &8[&#7CFC9AChuột trái để ...&8]. Lore ngắn, khoảng 30 ký tự mỗi dòng.
+# Dòng lore chỉ chứa một placeholder nhiều dòng (%description%, %difficulties%, %rewards%) sẽ tự tách dòng.
+
+filler:
+  material: GRAY_STAINED_GLASS_PANE
+
+back:
+  name: '&#7FDBFFQuay lại'
+  lore: []
+
+close:
+  name: '&#FF8A8AĐóng'
+  lore: []
+
+words:
+  public: '&#7CFC9ACông khai'
+  private: '&#FF8A8ARiêng tư'
+  free: '&#7CFC9AMiễn phí'
+  ticket-leader: '&fx%amount% %ticket% &8(chủ phòng trả)'
+  ticket-each: '&fx%amount% %ticket% &8(mỗi người)'
+  fee: '&a%amount%$'
+  and: ' &7+ '
+  lives-shared: '&f%amount% mạng chung'
+  lives-personal: '&f%amount% mạng mỗi người'
+  lives-none: '&fKhông có mạng'
+  no-limit: 'Không giới hạn'
+  none: '-'
+  ready: '&#7CFC9ASẵn sàng'
+  cooldown: '&#FF8A8AChờ %time%'
+  daily-left: '&#7CFC9ACòn %left%/%limit% lượt hôm nay'
+  daily-used-up: '&#FF8A8AHết lượt hôm nay'
+  cleared: '&#7CFC9AĐã clear x%count%'
+  not-cleared: '&7Chưa clear'
+  difficulty-line: '&7• %name% &8[%time%&8]'
+
+main:
+  title: '&8Phó Bản'
+  empty:
+    name: '&#FF8A8AChưa có phó bản nào'
+    lore:
+      - '&#BFC7D5Quay lại sau nhé'
+  dungeon:
+    name: '%name%'
+    lore:
+      - '%description%'
+      - ''
+      - '&#FFD166Thông tin:'
+      - '&7• Số người: &f%players%'
+      - '&7• Vào phòng: %entry%'
+      - '&7• Mạng: %lives%'
+      - '&7• Phòng đang mở: &f%rooms%'
+      - ''
+      - '&#FFD166Độ khó:'
+      - '%difficulties%'
+      - ''
+      - '&#FFD166Của bạn:'
+      - '&7• Lượt chơi: %cooldown%'
+      - '&7• Thành tích: %clears%'
+      - '&7• Nhanh nhất: &f%best%'
+      - ''
+      - '&8[&#7CFC9AChuột trái để xem phòng&8]'
+      - '&8[&#7FDBFFChuột phải để tạo phòng&8]'
+  my-room:
+    name: '&#5EEAD4Phòng của bạn'
+    lore:
+      - '&#BFC7D5%dungeon%'
+      - ''
+      - '&7• Số người: &f%count%/%max%'
+      - ''
+      - '&8[&#7CFC9AChuột trái để mở phòng&8]'
+  pending:
+    name: '&#FFB86BKho thưởng chờ'
+    lore:
+      - '&#BFC7D5Phần thưởng không vừa túi đồ'
+      - ''
+      - '&7• Đang giữ: &f%count% &7món'
+      - ''
+      - '&8[&#7CFC9AChuột trái để mở kho&8]'
+
+difficulty:
+  title: '&8Chọn độ khó'
+  action-create: '&8[&#7CFC9AChuột trái để tạo phòng&8]'
+  action-change: '&8[&#7CFC9AChuột trái để chọn&8]'
+  item:
+    name: '%name%'
+    lore:
+      - '&#FFD166Thông tin:'
+      - '&7• Thời gian: &f%time%'
+      - '&7• Level quái: &f%level%'
+      - '&7• Máu quái: &f%health%'
+      - '&7• Sát thương quái: &f%damage%'
+      - '&7• Mạng: %lives%'
+      - ''
+      - '%action%'
+
+rooms:
+  title: '&8Phòng đang mở'
+  empty:
+    name: '&#FF8A8AChưa có phòng nào'
+    lore:
+      - '&#BFC7D5Tạo phòng mới ở nút bên dưới'
+  create:
+    name: '&#7CFC9ATạo phòng mới'
+    lore:
+      - '&#BFC7D5Bạn sẽ là chủ phòng'
+      - ''
+      - '&8[&#7CFC9AChuột trái để chọn độ khó&8]'
+  action-join: '&8[&#7CFC9AChuột trái để vào phòng&8]'
+  action-open: '&8[&#7FDBFFChuột trái để mở phòng&8]'
+  action-full: '&8[&#FF8A8APhòng đã đủ người&8]'
+  room:
+    name: '&fPhòng của %leader%'
+    lore:
+      - '&#FFD166Thông tin:'
+      - '&7• Độ khó: %difficulty%'
+      - '&7• Số người: &f%count%/%max%'
+      - '&7• Trạng thái: %status%'
+      - ''
+      - '%action%'
+
+room:
+  title: '&8Phòng chờ'
+  leader-tag: ' &8[&#FFD166Chủ phòng&8]'
+  member-tag: ''
+  online: '&#7CFC9AOnline'
+  offline: '&#FF8A8AOffline'
+  member:
+    name: '&f%player%%tag%'
+    lore:
+      - '&7• Trạng thái: %status%'
+  member-actions:
+    - ''
+    - '&8[&#7FDBFFChuột trái để chuyển chủ phòng&8]'
+    - '&8[&#FF8A8AChuột phải để kick&8]'
+  empty-slot:
+    name: '&7Chỗ trống'
+    lore: []
+  info:
+    name: '%dungeon%'
+    lore:
+      - '&#FFD166Thông tin:'
+      - '&7• Độ khó: %difficulty%'
+      - '&7• Số người: &f%count%/%max% &8(tối thiểu %min%)'
+      - '&7• Thời gian: &f%time%'
+      - '&7• Mạng: %lives%'
+      - '&7• Vào phòng: %entry%'
+      - '&7• Trạng thái: %status%'
+  invite:
+    name: '&#7FDBFFMời người chơi'
+    lore:
+      - '&#BFC7D5Nhập tên vào chat'
+      - ''
+      - '&8[&#7CFC9AChuột trái để mời&8]'
+  toggle:
+    name: '&#B39DDBCông khai / Riêng tư'
+    lore:
+      - '&7• Hiện tại: %status%'
+      - ''
+      - '&#BFC7D5Phòng công khai ai cũng vào được'
+      - '&#BFC7D5Phòng riêng tư cần lời mời'
+      - ''
+      - '&8[&#7CFC9AChuột trái để đổi&8]'
+  difficulty:
+    name: '&#FFB86BĐổi độ khó'
+    lore:
+      - '&7• Hiện tại: %difficulty%'
+      - ''
+      - '&8[&#7CFC9AChuột trái để chọn&8]'
+  start:
+    name: '&#7CFC9ABắt đầu'
+    lore:
+      - '&7• Số người: &f%count% &8(tối thiểu %min%)'
+      - ''
+      - '&#BFC7D5Vé và phí bị trừ khi bắt đầu'
+      - ''
+      - '&8[&#7CFC9AChuột trái để bắt đầu&8]'
+  waiting:
+    name: '&#FFD166Đang chờ chủ phòng'
+    lore:
+      - '&#BFC7D5Chủ phòng sẽ bắt đầu phó bản'
+  leave:
+    name: '&#FF8A8ARời phòng'
+    lore:
+      - '&8[&#FF8A8AChuột trái để rời&8]'
+
+result:
+  title: '&8Kết quả phó bản'
+  no-rewards: '&7• Không có'
+  reward-line: '&7• %reward%'
+  first-clear: '&#FFD166Lần clear đầu tiên'
+  outcome:
+    WIN: '&#7CFC9AHoàn thành'
+    FAIL: '&#FF6B6BThất bại'
+    TIMEOUT: '&#FF6B6BHết giờ'
+    STOPPED: '&#FFD166Đã dừng'
+    ABANDONED: '&#FF8A8ABỏ dở'
+  summary:
+    name: '%dungeon%'
+    lore:
+      - '&#FFD166Thông tin:'
+      - '&7• Kết quả: %outcome%'
+      - '&7• Độ khó: %difficulty%'
+      - '&7• Thời gian: &f%time%'
+      - '&7• Số lần chết: &f%deaths%'
+      - '%first%'
+      - ''
+      - '&#FFD166Phần thưởng:'
+      - '%rewards%'
+
+loot:
+  title: '&8Rương thưởng'
+  info:
+    name: '&#FFB86BTúi thưởng phó bản'
+    lore:
+      - '&#BFC7D5Đồ trong rương đã vào túi thưởng'
+      - '&#BFC7D5Nhận khi phòng hoàn thành'
+      - ''
+      - '&#FFD166Lưu ý:'
+      - '&7• Rời phó bản là mất phần này'
+
+pending:
+  title: '&8Kho thưởng chờ'
+  empty:
+    name: '&#7CFC9AKho đang trống'
+    lore: []
+  item-lore:
+    - ''
+    - '&8[&#7CFC9AChuột trái để nhận&8]'
+  claim-all:
+    name: '&#7CFC9ANhận tất cả'
+    lore:
+      - '&7• Đang giữ: &f%count% &7món'
+      - ''
+      - '&#BFC7D5Nhận tới khi túi đầy'
+      - ''
+      - '&8[&#7CFC9AChuột trái để nhận&8]'
+
+editor:
+  empty-value: '&8(trống)'
+  state-on: '&#7CFC9ABật'
+  state-off: '&#FF8A8ATắt'
+  param-line: '&7• %label%: &f%value%'
+  tools:
+    node:
+      name: '&#5EEAD4Công cụ node'
+      lore:
+        - '&#BFC7D5Gắn logic vào block'
+        - ''
+        - '&8[&#7CFC9AChuột phải vào block để sửa node&8]'
+    region:
+      name: '&#FFD166Công cụ vùng'
+      lore:
+        - '&#BFC7D5Chọn 2 góc, rồi lưu bằng'
+        - '&f/pba region add <tên>'
+        - '&#BFC7D5Hoặc đặt khung map bằng &f/pba bounds'
+        - ''
+        - '&8[&#7CFC9AChuột trái để chọn góc 1&8]'
+        - '&8[&#7FDBFFChuột phải để chọn góc 2&8]'
+    point:
+      name: '&#B39DDBCông cụ điểm'
+      lore:
+        - '&#BFC7D5Điểm bắt đầu, checkpoint, ải'
+        - ''
+        - '&8[&#7CFC9AChuột phải để mở&8]'
+    view:
+      name: '&#7FDBFFHiện / ẩn'
+      lore:
+        - '&#BFC7D5Hạt chỉ node, vùng, khung map'
+        - ''
+        - '&8[&#7CFC9AChuột phải để bật tắt&8]'
+  node:
+    title: '&8Node %id%'
+    new: 'mới'
+    create:
+      name: '&#7CFC9ATạo node tại block này'
+      lore:
+        - '&7• Vị trí: &f%pos%'
+        - ''
+        - '&8[&#7CFC9AChuột trái để tạo&8]'
+    info:
+      name: '&#5EEAD4Node %id%'
+      lore:
+        - '&7• Vị trí: &f%pos%'
+        - '&#BFC7D5Toạ độ tính từ gốc ô editor'
+    trigger:
+      name: '&#FFD166Trigger'
+      lore:
+        - '&7• Loại: &f%type%'
+        - '&#BFC7D5%description%'
+        - ''
+        - '&8[&#7CFC9AChuột trái để đổi loại&8]'
+        - '&8[&#7FDBFFChuột phải để sửa thông số&8]'
+    repeat:
+      name: '&#7FDBFFLặp lại'
+      lore:
+        - '&7• Hiện tại: %value%'
+        - '&#BFC7D5Tắt = chỉ chạy 1 lần'
+        - ''
+        - '&8[&#7CFC9AChuột trái để đổi&8]'
+    per-player:
+      name: '&#B39DDBTính riêng từng người'
+      lore:
+        - '&7• Hiện tại: %value%'
+        - '&#BFC7D5Bật = mỗi người chạy được 1 lần'
+        - '&#BFC7D5(ví dụ rương thưởng)'
+        - ''
+        - '&8[&#7CFC9AChuột trái để đổi&8]'
+    delay:
+      name: '&#FFB86BĐộ trễ'
+      lore:
+        - '&7• Hiện tại: &f%value% tick'
+        - '&#BFC7D520 tick = 1 giây'
+        - ''
+        - '&8[&#7CFC9AChuột trái để nhập&8]'
+    delete:
+      name: '&#FF6B6BXoá node'
+      lore:
+        - '&8[&#FF8A8AShift + chuột để xoá&8]'
+    add-condition:
+      name: '&#7FDBFFĐiều kiện &8[%count%/8&8]'
+      lore:
+        - '&#BFC7D5Node chỉ chạy khi đủ điều kiện'
+        - ''
+        - '&8[&#7CFC9AChuột trái để thêm&8]'
+    add-action:
+      name: '&#7CFC9AHành động &8[%count%/16&8]'
+      lore:
+        - '&#BFC7D5Chạy lần lượt từ trái sang phải'
+        - ''
+        - '&8[&#7CFC9AChuột trái để thêm&8]'
+    condition-name: '&#7FDBFFĐiều kiện: &f%type%'
+    action-name: '&#7CFC9AHành động: &f%type%'
+    order: '&7• Thứ tự: &f%index%'
+    element-actions:
+      - ''
+      - '&8[&#7CFC9AChuột trái để sửa&8]'
+      - '&8[&#7FDBFFShift + trái để đưa lên trước&8]'
+      - '&8[&#FF8A8AShift + phải để xoá&8]'
+  pick:
+    trigger-title: '&8Chọn trigger'
+    condition-title: '&8Chọn điều kiện'
+    action-title: '&8Chọn hành động'
+    name: '&f%type%'
+    lore:
+      - '&#BFC7D5%description%'
+      - ''
+      - '&8[&#7CFC9AChuột trái để chọn&8]'
+  param:
+    title: '&8Thông số'
+    name: '&#FFD166%label%'
+    lore:
+      - '&7• Hiện tại: &f%value%'
+      - '&7• Gợi ý: &f%hint%'
+      - '&7• Có sẵn: &f%options%'
+      - ''
+      - '&8[&#7CFC9AChuột trái để nhập&8]'
+      - '&8[&#FF8A8AChuột phải để về mặc định&8]'
+  points:
+    title: '&8Điểm'
+    set-start:
+      name: '&#7CFC9AĐiểm bắt đầu'
+      lore:
+        - '&7• Hiện tại: &f%value%'
+        - ''
+        - '&8[&#7CFC9AChuột trái để đặt tại chỗ bạn đứng&8]'
+    add:
+      name: '&#7FDBFFThêm điểm mới'
+      lore:
+        - '&#BFC7D5Checkpoint, điểm teleport'
+        - ''
+        - '&8[&#7CFC9AChuột trái để đặt tại chỗ bạn đứng&8]'
+    stages:
+      name: '&#FFD166Ải &8[%count%&8]'
+      lore:
+        - '&#BFC7D5Các bước hiện trên scoreboard'
+        - ''
+        - '&8[&#7CFC9AChuột trái để mở&8]'
+    point:
+      name: '&f%name%'
+      lore:
+        - '&7• Vị trí: &f%value%'
+        - ''
+        - '&8[&#7CFC9AChuột trái để tới đó&8]'
+        - '&8[&#7FDBFFShift + trái để dời tới chỗ bạn đứng&8]'
+        - '&8[&#FF8A8AShift + phải để xoá&8]'
+  stages:
+    title: '&8Ải'
+    add:
+      name: '&#7CFC9AThêm ải'
+      lore:
+        - '&8[&#7CFC9AChuột trái để thêm&8]'
+    stage:
+      name: '%name%'
+      lore:
+        - '&7• Id: &f%id%'
+        - '&7• Thứ tự: &f%index%'
+        - '&7• Mục tiêu: &f%objective%'
+        - ''
+        - '&8[&#7CFC9AChuột trái để đổi tên&8]'
+        - '&8[&#7FDBFFChuột phải để đổi mục tiêu&8]'
+        - '&8[&#7FDBFFShift + trái để đưa lên trước&8]'
+        - '&8[&#FF8A8AShift + phải để xoá&8]'
