@@ -66,6 +66,37 @@ public final class TemplateManager {
         }
     }
 
+    /**
+     * Re-reads nodes.yml of every dungeon that is neither being edited nor running (those are skipped and returned),
+     * and loads dungeon folders that were added on disk.
+     */
+    public java.util.List<String> reloadEditorData(java.util.function.Predicate<DungeonTemplate> busy) {
+        java.util.List<String> skipped = new java.util.ArrayList<>();
+        for (DungeonTemplate t : templates.values()) {
+            if (busy.test(t)) {
+                skipped.add(t.id);
+                continue;
+            }
+            if (t.nodesFile().isFile()) t.loadEditorData(YamlConfiguration.loadConfiguration(t.nodesFile()));
+        }
+        File[] dirs = root.listFiles(File::isDirectory);
+        if (dirs != null) {
+            for (File dir : dirs) {
+                String id = dir.getName().toLowerCase(Locale.ROOT);
+                if (!validId(id) || templates.containsKey(id) || !new File(dir, "dungeon.yml").isFile()) continue;
+                DungeonTemplate t = new DungeonTemplate(id, dir);
+                try {
+                    load(t);
+                    templates.put(id, t);
+                    plugin.getLogger().info("Đã tải phó bản mới " + id);
+                } catch (Exception e) {
+                    plugin.getLogger().log(Level.WARNING, "Không đọc được phó bản " + id, e);
+                }
+            }
+        }
+        return skipped;
+    }
+
     public DungeonTemplate get(String id) {
         return id == null ? null : templates.get(id.toLowerCase(Locale.ROOT));
     }

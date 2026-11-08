@@ -56,6 +56,11 @@ public final class EditorService implements Listener {
         return sessions.containsKey(u);
     }
 
+    public boolean editingTemplate(DungeonTemplate t) {
+        for (Session s : sessions.values()) if (s.template == t) return true;
+        return false;
+    }
+
     public Session session(UUID u) {
         return sessions.get(u);
     }

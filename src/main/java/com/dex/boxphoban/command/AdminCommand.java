@@ -28,7 +28,7 @@ import java.util.Locale;
 public final class AdminCommand implements TabExecutor {
 
     private static final List<String> SUBS = List.of("create", "edit", "exit", "import", "bounds", "region", "save", "info",
-            "delete", "test", "list", "stop", "watch", "ticket", "reward", "loot", "resetcooldown", "reload", "help");
+            "delete", "test", "list", "stop", "watch", "ticket", "reward", "loot", "resetcooldown", "reload", "pos", "help");
 
     private final BoxPhoBan plugin;
 
@@ -222,7 +222,23 @@ public final class AdminCommand implements TabExecutor {
             }
             case "reload" -> {
                 plugin.reload();
+                List<String> skipped = plugin.templates().reloadEditorData(
+                        t -> plugin.instances().running(t) > 0 || plugin.editor().editingTemplate(t));
                 send(sender, "admin.reloaded");
+                if (!skipped.isEmpty()) send(sender, "admin.reload-skipped", "list", String.join(", ", skipped));
+            }
+            case "pos" -> {
+                if (p == null) return players(sender);
+                EditorService.Session s = plugin.editor().session(p.getUniqueId());
+                if (s == null) {
+                    send(p, "editor.not-editing");
+                    return true;
+                }
+                BlockPos o = plugin.editor().origin(s.template);
+                BlockPos feet = BlockPos.of(p.getLocation().getBlock()).minus(o);
+                org.bukkit.block.Block target = p.getTargetBlockExact(10);
+                String look = target == null ? "-" : BlockPos.of(target).minus(o) + " (" + target.getType().name().toLowerCase(Locale.ROOT) + ")";
+                send(p, "admin.pos", "feet", feet.toString(), "target", look);
             }
             default -> help(sender);
         }
