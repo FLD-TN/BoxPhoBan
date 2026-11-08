@@ -67,7 +67,8 @@ các node còn lại bị tắt và rương của chúng bị gỡ khỏi map (c
 ### Giữ vị trí
 
 Trigger **Giữ vị trí** `region`, `seconds`, `players` (tối thiểu), `mode = reset` (rời vùng là về 0) hoặc `pause`.
-Viền hạt hiện quanh vùng, actionbar hiện tiến độ. Nên thêm điều kiện **Ải hiện tại** để vùng chỉ hoạt động trong ải đó.
+Viền hạt quanh vùng, holo DecentHolograms phía trên (tên + thanh % ), actionbar và scoreboard hiện tiến độ.
+Bật tắt chung trong `config.yml` (`hold.*`), từng node bằng thông số `hologram` / `border`, chữ trong `messages.yml` (`hold.*`). Nên thêm điều kiện **Ải hiện tại** để vùng chỉ hoạt động trong ải đó.
 
 ### Cổng cần chìa khoá
 
@@ -96,7 +97,7 @@ Quyền: `boxphoban.use` (mặc định ai cũng có), `boxphoban.admin`, `boxph
 
 `%boxphoban_in%` `%boxphoban_name%` `%boxphoban_difficulty%` `%boxphoban_stage%` `%boxphoban_stage_index%`
 `%boxphoban_stage_total%` `%boxphoban_objective%` `%boxphoban_time_left%` `%boxphoban_time_elapsed%` `%boxphoban_lives%`
-`%boxphoban_players_alive%` `%boxphoban_players%` `%boxphoban_mobs_left%` `%boxphoban_hold%` `%boxphoban_state%` `%boxphoban_in_room%`
+`%boxphoban_players_alive%` `%boxphoban_players%` `%boxphoban_mobs_left%` `%boxphoban_hold%` `%boxphoban_hold_percent%` `%boxphoban_hold_bar%` `%boxphoban_hold_name%` `%boxphoban_state%` `%boxphoban_in_room%`
 `%boxphoban_room_dungeon%` `%boxphoban_cooldown_<id>%` `%boxphoban_clears_<id>%` `%boxphoban_best_<id>%`
 
 ## File

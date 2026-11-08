@@ -199,18 +199,22 @@ public final class NodeEngine {
     /** Every 10 ticks: hold-area triggers (someone must stay inside the region long enough). */
     public void tickHold(Instance in) {
         if (in.phase != Instance.Phase.RUNNING) return;
+        var cfg = plugin.settings();
         List<Player> alive = in.alivePlayers();
-        String text = "";
+        boolean shown = false;
         for (Node n : new ArrayList<>(in.template.nodes.values())) {
-            if (n.triggerType() != TriggerType.HOLD_AREA || in.disabledNodes.contains(n.id)) continue;
+            if (n.triggerType() != TriggerType.HOLD_AREA) continue;
+            String holo = "boxphoban_" + in.id + "_" + n.id;
             Instance.NodeState st = in.state(n.id);
-            if (st.fired && !n.repeat) continue;
-            boolean allowed = true;
-            for (Element c : n.conditions) if (!check(in, c)) allowed = false;
-            if (!allowed) continue;
+            boolean active = !in.disabledNodes.contains(n.id) && !(st.fired && !n.repeat);
+            if (active) for (Element c : n.conditions) if (!check(in, c)) active = false;
             Box rel = in.template.regions.get(n.trigger.s("region", ""));
-            if (rel == null) {
+            if (active && rel == null) {
                 warnOnce(in, "Node " + n.id + ": không có vùng " + n.trigger.s("region", ""));
+                active = false;
+            }
+            if (!active) {
+                if (in.holograms.remove(holo)) plugin.holograms().remove(holo);
                 continue;
             }
             Box box = in.absolute(rel);
@@ -218,28 +222,55 @@ public final class NodeEngine {
             for (Player p : alive) if (box.contains(p.getLocation())) inside++;
             int need = Math.max(1, n.trigger.i("players", 1));
             int total = Math.max(1, n.trigger.i("seconds", 30)) * 20;
-            if (inside >= need) st.counter += 10;
+            boolean holding = inside >= need;
+            if (holding) st.counter += 10;
             else if (n.trigger.s("mode", "reset").equals("reset")) st.counter = 0;
-            if (n.trigger.b("border", true)) border(in, box, inside >= need);
-            int secs = Math.min(total, st.counter) / 20;
-            if (st.counter > 0 || inside > 0) {
-                String line = plugin.messages().text(inside >= need ? "dungeon.hold-progress" : "dungeon.hold-paused",
-                        "seconds", String.valueOf(secs), "total", String.valueOf(total / 20),
-                        "bar", bar(secs, total / 20), "inside", String.valueOf(inside), "need", String.valueOf(need));
-                for (Player p : in.onlineMembers()) p.sendActionBar(Text.component(line));
-                text = secs + "/" + total / 20;
+            int done = Math.min(total, st.counter);
+            int percent = done * 100 / total;
+            String name = n.trigger.s("name", "&#FFD166Chiếm giữ");
+            String bar = bar(done, total);
+            String[] kv = {"name", name, "percent", String.valueOf(percent), "bar", bar,
+                    "seconds", String.valueOf(done / 20), "total", String.valueOf(total / 20),
+                    "inside", String.valueOf(inside), "need", String.valueOf(need)};
+            if (cfg.holdBorder && n.trigger.b("border", true)) border(in, box, holding);
+            if (cfg.holdActionbar && (st.counter > 0 || inside > 0)) {
+                String line = plugin.messages().text(holding ? "hold.actionbar-holding" : "hold.actionbar-waiting", kv);
+                if (!line.isEmpty()) for (Player p : in.onlineMembers()) p.sendActionBar(Text.component(line));
+            }
+            if (cfg.holdHologram && n.trigger.b("hologram", true) && plugin.holograms().enabled()) {
+                org.bukkit.Location at = new org.bukkit.Location(in.world, (box.min().x() + box.max().x() + 1) / 2.0,
+                        box.max().y() + 1 + n.trigger.d("holo-height", 1.5), (box.min().z() + box.max().z() + 1) / 2.0);
+                List<String> lines = new ArrayList<>();
+                for (String l : plugin.messages().list(holding ? "hold.hologram-holding" : "hold.hologram-waiting")) {
+                    lines.add(Text.replace(l, kv));
+                }
+                plugin.holograms().show(holo, at, lines);
+                in.holograms.add(holo);
+            }
+            if (!shown) {
+                shown = true;
+                in.holdText = (done / 20) + "/" + (total / 20);
+                in.holdPercent = percent + "%";
+                in.holdBar = bar;
+                in.holdName = name;
             }
             if (st.counter >= total) {
                 st.counter = 0;
-                tryRun(in, n, null);
+                if (tryRun(in, n, null) && !n.repeat && in.holograms.remove(holo)) plugin.holograms().remove(holo);
             }
         }
-        in.holdText = text;
+        if (!shown) {
+            in.holdText = "";
+            in.holdPercent = "";
+            in.holdBar = "";
+            in.holdName = "";
+        }
     }
 
-    private static String bar(int done, int total) {
-        int filled = total <= 0 ? 20 : Math.min(20, done * 20 / total);
-        return Text.color("&#7CFC9A" + "|".repeat(filled) + "&8" + "|".repeat(20 - filled));
+    private String bar(int done, int total) {
+        int len = Math.max(1, plugin.settings().holdBarLength);
+        int filled = total <= 0 ? len : Math.min(len, done * len / total);
+        return plugin.messages().raw("hold.bar-filled").repeat(filled) + plugin.messages().raw("hold.bar-empty").repeat(len - filled);
     }
 
     private void border(Instance in, Box b, boolean active) {

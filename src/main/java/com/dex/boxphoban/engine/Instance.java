@@ -91,6 +91,11 @@ public final class Instance {
     public final Set<String> disabledNodes = new HashSet<>();
     /** Hold-area progress ("12/30") of the node being held, for the placeholder. */
     public String holdText = "";
+    public String holdPercent = "";
+    public String holdBar = "";
+    public String holdName = "";
+    /** DecentHolograms names created for this instance. */
+    public final Set<String> holograms = new HashSet<>();
 
     public Instance(int id, DungeonTemplate template, Difficulty difficulty, int slot, BlockPos origin, World world, boolean test) {
         this.id = id;

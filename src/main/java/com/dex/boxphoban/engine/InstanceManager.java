@@ -626,6 +626,8 @@ public final class InstanceManager {
 
     private void removeMobs(Instance in) {
         plugin.walls().clear(in);
+        for (String h : in.holograms) plugin.holograms().remove(h);
+        in.holograms.clear();
         for (UUID mob : new ArrayList<>(in.mobs.keySet())) {
             Entity e = Bukkit.getEntity(mob);
             if (e != null) e.remove();

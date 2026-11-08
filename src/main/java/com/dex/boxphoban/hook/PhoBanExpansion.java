@@ -89,6 +89,9 @@ public final class PhoBanExpansion extends PlaceholderExpansion {
             case "players" -> String.valueOf(in.members.size());
             case "mobs_left" -> String.valueOf(in.mobsLeft());
             case "hold" -> in.holdText;
+            case "hold_percent" -> in.holdPercent;
+            case "hold_bar" -> Text.color(in.holdBar);
+            case "hold_name" -> Text.color(in.holdName);
             case "state" -> plugin.messages().text("placeholder.state." + in.stateOf(player.getUniqueId()).name().toLowerCase());
             default -> null;
         };

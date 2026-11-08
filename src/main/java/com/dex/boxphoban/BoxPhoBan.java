@@ -63,6 +63,7 @@ public final class BoxPhoBan extends JavaPlugin {
     private MenuService menus;
     private Words words;
     private ChatInput input;
+    private com.dex.boxphoban.hook.Holograms holograms;
 
     @Override
     public void onEnable() {
@@ -113,6 +114,7 @@ public final class BoxPhoBan extends JavaPlugin {
         menus = new MenuService(this);
         words = new Words(this);
         input = new ChatInput(this);
+        holograms = new com.dex.boxphoban.hook.Holograms(getLogger());
 
         var pm = Bukkit.getPluginManager();
         pm.registerEvents(new MenuListener(), this);
@@ -260,6 +262,10 @@ public final class BoxPhoBan extends JavaPlugin {
 
     public Words words() {
         return words;
+    }
+
+    public com.dex.boxphoban.hook.Holograms holograms() {
+        return holograms;
     }
 
     public ChatInput input() {

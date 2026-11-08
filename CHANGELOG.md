@@ -21,6 +21,8 @@ Tường chuyển động và khoá phòng.
   (rương chìa đổi chỗ mỗi lượt).
 - Trigger **Giữ vị trí**: đứng trong vùng đủ số giây (về 0 hoặc tạm dừng khi rời vùng), viền hạt + tiến độ actionbar,
   placeholder `%boxphoban_hold%`.
+- Giữ vị trí có holo DecentHolograms (tên vị trí + thanh tiến độ %), placeholder `%boxphoban_hold_percent%`,
+  `%boxphoban_hold_bar%`, `%boxphoban_hold_name%`; bật tắt trong config.yml `hold.*` hoặc từng node, chữ trong messages.yml `hold.*`.
 - Hành động **Đổi mục tiêu**: đổi dòng nhiệm vụ trên scoreboard giữa chừng trong một ải (tự về mục tiêu của ải khi
   chuyển ải).
 

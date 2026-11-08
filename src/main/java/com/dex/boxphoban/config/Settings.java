@@ -31,6 +31,10 @@ public final class Settings {
     public final int winDelaySeconds;
     public final int endDelaySeconds;
     public final int resultDelayTicks;
+    public final boolean holdHologram;
+    public final boolean holdActionbar;
+    public final boolean holdBorder;
+    public final int holdBarLength;
     private final String fallbackWorld;
     private final double fx, fy, fz;
     private final float fyaw, fpitch;
@@ -62,6 +66,10 @@ public final class Settings {
         winDelaySeconds = Math.max(0, c.getInt("end.win-delay-seconds", 5));
         endDelaySeconds = Math.max(0, c.getInt("end.fail-delay-seconds", 3));
         resultDelayTicks = Math.max(1, c.getInt("end.result-menu-delay-ticks", 10));
+        holdHologram = c.getBoolean("hold.hologram", true);
+        holdActionbar = c.getBoolean("hold.actionbar", true);
+        holdBorder = c.getBoolean("hold.border", true);
+        holdBarLength = Math.max(1, Math.min(60, c.getInt("hold.bar-length", 20)));
         fallbackWorld = c.getString("fallback-location.world", "");
         fx = c.getDouble("fallback-location.x");
         fy = c.getDouble("fallback-location.y", 64);

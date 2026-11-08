@@ -28,6 +28,7 @@ dependencies {
     compileOnly(files("libs/MythicMobs-5.13.0.jar"))
     compileOnly(files("libs/FastAsyncWorldEdit-2.13.2.jar"))
     compileOnly(files("libs/boxcore-api-1.4.0.jar"))
+    compileOnly(files("libs/DecentHolograms-2.10.1.jar"))
 
     testImplementation(paperApi)
     testImplementation(platform("org.junit:junit-bom:5.11.4"))

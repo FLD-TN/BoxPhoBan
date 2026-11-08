@@ -5,7 +5,7 @@ api-version: '1.21'
 author: dex
 description: Phó bản theo phòng cho BoxPvP
 depend: [MythicMobs, FastAsyncWorldEdit]
-softdepend: [PlaceholderAPI, Vault, BoxCore, BoxPet]
+softdepend: [PlaceholderAPI, Vault, BoxCore, BoxPet, DecentHolograms]
 
 commands:
   phoban:

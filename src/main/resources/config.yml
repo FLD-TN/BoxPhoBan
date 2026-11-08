@@ -52,6 +52,14 @@ end:
   # Mở GUI kết quả sau khi về (tick)
   result-menu-delay-ticks: 10
 
+hold:
+  # Trigger "Giữ vị trí": bật tắt cho mọi node (mỗi node còn có tuỳ chọn riêng). Chữ nằm trong messages.yml (hold.*)
+  hologram: true
+  actionbar: true
+  border: true
+  # Số vạch của thanh tiến độ
+  bar-length: 20
+
 # Giờ reset cooldown DAILY / WEEKLY và lượt mỗi ngày
 timezone: Asia/Ho_Chi_Minh
 

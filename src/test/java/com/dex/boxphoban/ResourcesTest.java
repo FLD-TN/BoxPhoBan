@@ -43,7 +43,8 @@ class ResourcesTest {
         for (String p : prefixes) if (k.startsWith(p)) return true;
         return k.endsWith(".yml") || k.endsWith(".schem") || k.equals("entry.cost-money") || k.equals("entry.daily-limit")
                 || k.equals("entry.permission") || k.equals("entry.required-clears") || k.equals("room.idle-timeout")
-                || k.equals("room.invite-timeout");
+                || k.equals("room.invite-timeout") || k.equals("hold.hologram") || k.equals("hold.actionbar")
+                || k.equals("hold.border") || k.equals("hold.bar-length");
     }
 
     @Test

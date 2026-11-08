@@ -122,8 +122,6 @@ dungeon:
   stage-cleared: '&#7CFC9A✔ Đã dọn sạch quái, lối đi đã mở'
   need-key: '&#FF6B6BCần chìa khoá để mở'
   key-received: '&#7CFC9A✔ Bạn nhận được %key%'
-  hold-progress: '&#7CFC9AGiữ vị trí %bar% &f%seconds%/%total% giây'
-  hold-paused: '&#FFD166Cần &f%need% &#FFD166người trong vùng %bar% &f%seconds%/%total% giây'
   key-received-other: '&#FFD166(!) &f%player% &7đã nhặt được %key%'
   key-lore:
     - '&#BFC7D5Chỉ dùng trong phó bản này'
@@ -255,6 +253,22 @@ admin:
   info-yes: '&#7CFC9A✔'
   info-no: '&#FF6B6B✘'
   info: '&#5EEAD4%dungeon% &8[%id%&8] &7bật %enabled% &8- &7map %map% &8- &7khung &f%bounds% &8- &7điểm bắt đầu %start% &8- &f%nodes% &7node, &f%stages% &7ải, &f%regions% &7vùng, &f%points% &7điểm &8- &7độ khó &f%difficulties% &8- &7chơi được %playable% &8- &7đang chạy &f%running%'
+
+# Giữ vị trí (trigger Giữ vị trí). Bật tắt từng phần trong config.yml (hold.*) hoặc từng node (Hiện holo, Hiện viền).
+# Placeholder: %name% %percent% %bar% %seconds% %total% %inside% %need%. Để [] / '' để ẩn phần đó
+hold:
+  bar-filled: '&#7CFC9A|'
+  bar-empty: '&8|'
+  hologram-holding:
+    - '%name%'
+    - '%bar% &f%percent%%'
+    - '&#7CFC9AĐang giữ &8[%inside%/%need% người&8]'
+  hologram-waiting:
+    - '%name%'
+    - '%bar% &f%percent%%'
+    - '&#FFD166Cần %need% người đứng trong vùng'
+  actionbar-holding: '%name% %bar% &f%percent%% &8[%seconds%/%total% giây&8]'
+  actionbar-waiting: '&#FFD166Cần &f%need% &#FFD166người trong vùng %bar% &f%percent%%'
 
 placeholder:
   ready: 'Sẵn sàng'
