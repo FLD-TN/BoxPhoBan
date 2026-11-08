@@ -85,6 +85,8 @@ public final class Instance {
     public boolean stageCleared;
     /** Node runs waiting for their delay (a delayed spawn keeps the stage from counting as cleared). */
     public int pendingDelayed;
+    /** Objective set by a node (Đổi mục tiêu); null = the stage's own objective. Reset on stage change. */
+    public String objectiveOverride;
 
     public Instance(int id, DungeonTemplate template, Difficulty difficulty, int slot, BlockPos origin, World world, boolean test) {
         this.id = id;

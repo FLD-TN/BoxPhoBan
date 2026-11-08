@@ -17,6 +17,8 @@ Tường chuyển động và khoá phòng.
 - Paste phòng bỏ qua block không khí (nhanh hơn nhiều với map rộng).
 - Trigger **Tương tác** và **Dùng chìa** có thêm `region`: bấm block nào trong vùng cũng được (ví dụ cả bức cổng).
   Nhận chìa thì cả đội được báo ai đang giữ chìa.
+- Hành động **Đổi mục tiêu**: đổi dòng nhiệm vụ trên scoreboard giữa chừng trong một ải (tự về mục tiêu của ải khi
+  chuyển ải).
 
 ## 0.1.0 (2026-11-08)
 

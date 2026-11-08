@@ -47,6 +47,8 @@ public enum ActionType {
             p("point", "Điểm", POINT, "", "tên điểm, để trống = ngay trên node")),
     SET_STAGE("Chuyển ải", Material.WHITE_BANNER, "Sang ải khác",
             p("stage", "Ải", STAGE, "", "id ải, next = ải kế tiếp")),
+    SET_OBJECTIVE("Đổi mục tiêu", Material.WRITABLE_BOOK, "Đổi dòng nhiệm vụ trên scoreboard (tới khi chuyển ải)",
+            p("text", "Mục tiêu", TEXT, "", "có thể dùng %mobs_left% %time_left% %lives%, để trống = về mục tiêu của ải")),
     MESSAGE("Thông báo", Material.PAPER, "Chat, title hoặc actionbar cho cả phòng",
             p("mode", "Kiểu", CHOICE, "chat", "chat|title|actionbar"),
             p("text", "Nội dung", TEXT, "", "có màu &, &#RRGGBB"),

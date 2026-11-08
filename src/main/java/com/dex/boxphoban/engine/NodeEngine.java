@@ -389,6 +389,10 @@ public final class NodeEngine {
                 }
                 plugin.instances().setStage(in, idx);
             }
+            case SET_OBJECTIVE -> {
+                String text = a.s("text", "");
+                in.objectiveOverride = text.isEmpty() ? null : text;
+            }
             case MESSAGE -> {
                 String text = a.s("text", "").replace("%player%", who == null ? "" : who.getName());
                 String sub = a.s("subtitle", "").replace("%player%", who == null ? "" : who.getName());

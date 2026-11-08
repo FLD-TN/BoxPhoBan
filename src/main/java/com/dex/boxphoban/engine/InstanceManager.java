@@ -204,6 +204,7 @@ public final class InstanceManager {
         in.stageIndex = idx;
         in.stageStartMs = System.currentTimeMillis();
         in.stageMobs.clear();
+        in.objectiveOverride = null;
         in.stageSpawned = false;
         in.stageCleared = false;
         var st = in.template.stages.get(idx);

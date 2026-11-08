@@ -77,7 +77,8 @@ public final class PhoBanExpansion extends PlaceholderExpansion {
             case "stage_total" -> String.valueOf(in.template.stages.size());
             case "objective" -> {
                 Stage s = in.stage();
-                yield s == null ? "" : Text.color(Text.replace(s.objective, "mobs_left", String.valueOf(in.mobsLeft()),
+                String obj = in.objectiveOverride != null ? in.objectiveOverride : s == null ? null : s.objective;
+                yield obj == null ? "" : Text.color(Text.replace(obj, "mobs_left", String.valueOf(in.mobsLeft()),
                         "time_left", timeLeft(in), "lives", String.valueOf(in.livesOf(player.getUniqueId()))));
             }
             case "time_left" -> timeLeft(in);
