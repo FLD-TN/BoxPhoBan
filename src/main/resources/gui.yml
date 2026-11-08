@@ -315,6 +315,17 @@ editor:
         - '&#BFC7D520 tick = 1 giây'
         - ''
         - '&8[&#7CFC9AChuột trái để nhập&8]'
+    group:
+      name: '&#B39DDBNhóm ngẫu nhiên'
+      lore:
+        - '&7• Nhóm: &f%value%'
+        - '&7• Gỡ block khi không chọn: %remove%'
+        - ''
+        - '&#BFC7D5Mỗi lượt chỉ giữ ngẫu nhiên vài node'
+        - '&#BFC7D5cùng nhóm, các node khác bị tắt'
+        - ''
+        - '&8[&#7CFC9AChuột trái để đặt nhóm&8]'
+        - '&8[&#7FDBFFChuột phải để bật tắt gỡ block&8]'
     delete:
       name: '&#FF6B6BXoá node'
       lore:

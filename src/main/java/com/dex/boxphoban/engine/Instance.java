@@ -87,6 +87,10 @@ public final class Instance {
     public int pendingDelayed;
     /** Objective set by a node (Đổi mục tiêu); null = the stage's own objective. Reset on stage change. */
     public String objectiveOverride;
+    /** Nodes switched off for this run (not picked in their random group). */
+    public final Set<String> disabledNodes = new HashSet<>();
+    /** Hold-area progress ("12/30") of the node being held, for the placeholder. */
+    public String holdText = "";
 
     public Instance(int id, DungeonTemplate template, Difficulty difficulty, int slot, BlockPos origin, World world, boolean test) {
         this.id = id;

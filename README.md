@@ -58,6 +58,17 @@ Khi phó bản bắt đầu, các tường này tự được gỡ nên lối đ
 bên ngoài và chờ đội đánh xong. Nếu không còn ai sống trong phòng, cửa vào mở lại để vào đánh tiếp (quái giữ nguyên).
 Tường muốn đóng sẵn từ đầu: `/pba region wall <vùng> closed`.
 
+### Rương chìa đổi chỗ mỗi lượt
+
+Đặt rương ở nhiều chỗ, mỗi rương là một node (trigger **Tương tác** → **Cho chìa**). Ở ô **Nhóm ngẫu nhiên** của từng
+node gõ cùng một tên, ví dụ `ruongchia` (hoặc `ruongchia:2` để giữ 2 rương). Mỗi lượt plugin giữ ngẫu nhiên số rương đó,
+các node còn lại bị tắt và rương của chúng bị gỡ khỏi map (chuột phải ô nhóm để tắt việc gỡ block).
+
+### Giữ vị trí
+
+Trigger **Giữ vị trí** `region`, `seconds`, `players` (tối thiểu), `mode = reset` (rời vùng là về 0) hoặc `pause`.
+Viền hạt hiện quanh vùng, actionbar hiện tiến độ. Nên thêm điều kiện **Ải hiện tại** để vùng chỉ hoạt động trong ải đó.
+
 ### Cổng cần chìa khoá
 
 1. Xây cổng ở vị trí đóng, `/pba region add cong1`, rồi `/pba region wall cong1 closed` (cổng đóng sẵn từ đầu).
@@ -85,7 +96,7 @@ Quyền: `boxphoban.use` (mặc định ai cũng có), `boxphoban.admin`, `boxph
 
 `%boxphoban_in%` `%boxphoban_name%` `%boxphoban_difficulty%` `%boxphoban_stage%` `%boxphoban_stage_index%`
 `%boxphoban_stage_total%` `%boxphoban_objective%` `%boxphoban_time_left%` `%boxphoban_time_elapsed%` `%boxphoban_lives%`
-`%boxphoban_players_alive%` `%boxphoban_players%` `%boxphoban_mobs_left%` `%boxphoban_state%` `%boxphoban_in_room%`
+`%boxphoban_players_alive%` `%boxphoban_players%` `%boxphoban_mobs_left%` `%boxphoban_hold%` `%boxphoban_state%` `%boxphoban_in_room%`
 `%boxphoban_room_dungeon%` `%boxphoban_cooldown_<id>%` `%boxphoban_clears_<id>%` `%boxphoban_best_<id>%`
 
 ## File

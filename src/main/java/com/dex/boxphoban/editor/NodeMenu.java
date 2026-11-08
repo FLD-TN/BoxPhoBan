@@ -123,6 +123,41 @@ public final class NodeMenu extends Menu {
                 new NodeMenu(plugin, p, t, pos).open();
             }, () -> new NodeMenu(plugin, p, t, pos).open());
         });
+        set(15, item("editor.node.group", n.group.isEmpty() ? Material.GRAY_DYE : Material.ENDER_EYE,
+                "value", n.group.isEmpty() ? gui().raw("editor.empty-value") : n.group + " &8(giữ " + n.groupPick + ")",
+                "remove", gui().raw(n.groupRemoveBlock ? "editor.state-on" : "editor.state-off")), (p, c) -> {
+            sound();
+            if (c.isRightClick()) {
+                n.groupRemoveBlock = !n.groupRemoveBlock;
+                saved();
+                redraw();
+                return;
+            }
+            plugin.input().ask(p, "input.group", text -> {
+                String v = text.trim().toLowerCase();
+                if (v.equals("-")) {
+                    n.group = "";
+                } else {
+                    String[] parts = v.split(":");
+                    if (!com.dex.boxphoban.template.TemplateManager.validId(parts[0])) {
+                        plugin.messages().send(p, "input.bad-name");
+                        new NodeMenu(plugin, p, t, pos).open();
+                        return;
+                    }
+                    n.group = parts[0];
+                    n.groupPick = 1;
+                    if (parts.length > 1) {
+                        try {
+                            n.groupPick = Math.max(1, Integer.parseInt(parts[1]));
+                        } catch (NumberFormatException ignored) {
+                            // keep 1
+                        }
+                    }
+                }
+                saved();
+                new NodeMenu(plugin, p, t, pos).open();
+            }, () -> new NodeMenu(plugin, p, t, pos).open());
+        });
         set(16, item("editor.node.delete", Material.LAVA_BUCKET), (p, c) -> {
             if (c != ClickType.SHIFT_LEFT && c != ClickType.SHIFT_RIGHT) {
                 plugin.messages().send(p, "editor.node-delete-confirm");

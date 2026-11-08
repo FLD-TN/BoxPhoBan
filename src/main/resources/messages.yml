@@ -122,6 +122,8 @@ dungeon:
   stage-cleared: '&#7CFC9A✔ Đã dọn sạch quái, lối đi đã mở'
   need-key: '&#FF6B6BCần chìa khoá để mở'
   key-received: '&#7CFC9A✔ Bạn nhận được %key%'
+  hold-progress: '&#7CFC9AGiữ vị trí %bar% &f%seconds%/%total% giây'
+  hold-paused: '&#FFD166Cần &f%need% &#FFD166người trong vùng %bar% &f%seconds%/%total% giây'
   key-received-other: '&#FFD166(!) &f%player% &7đã nhặt được %key%'
   key-lore:
     - '&#BFC7D5Chỉ dùng trong phó bản này'
@@ -179,6 +181,7 @@ input:
   invalid: '&#FF6B6B✘ Giá trị &f%value% &#FF6B6Bkhông hợp lệ'
   invite: '&#FFD166(!) &7Nhập tên người muốn mời'
   delay: '&#FFD166(!) &7Nhập độ trễ (tick, 20 tick = 1 giây)'
+  group: '&#FFD166(!) &7Nhập tên nhóm, thêm &f:số &7để giữ nhiều node (ví dụ &fruongchia:2&7), &f- &7để bỏ nhóm'
   param: '&#FFD166(!) &7Nhập &f%label%&7. Có sẵn: &f%options%'
   point-name: '&#FFD166(!) &7Nhập tên điểm (a-z, 0-9, _), điểm đặt tại chỗ bạn đứng'
   stage-id: '&#FFD166(!) &7Nhập id ải (a-z, 0-9, _)'

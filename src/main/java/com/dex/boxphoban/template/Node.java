@@ -19,6 +19,11 @@ public final class Node {
     public boolean perPlayer;
     /** Ticks between trigger and actions. */
     public int delay;
+    /** Random group: each run keeps only {@link #groupPick} nodes of the group, the others are off. */
+    public String group = "";
+    public int groupPick = 1;
+    /** Nodes not picked in their group get their block removed (e.g. the chests that hold no key this run). */
+    public boolean groupRemoveBlock = true;
 
     public Node(String id, BlockPos pos) {
         this.id = id;

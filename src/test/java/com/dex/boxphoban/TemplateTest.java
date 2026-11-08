@@ -74,6 +74,9 @@ class TemplateTest {
         n.repeat = false;
         n.perPlayer = true;
         n.delay = 20;
+        n.group = "ruongchia";
+        n.groupPick = 2;
+        n.groupRemoveBlock = false;
         n.conditions.add(Element.withDefaults(ConditionType.CHANCE.name(), ConditionType.CHANCE.params));
         Element spawn = Element.withDefaults(ActionType.SPAWN_MOB.name(), ActionType.SPAWN_MOB.params);
         spawn.params.put("mob", "SkeletonKing");
@@ -101,6 +104,9 @@ class TemplateTest {
         assertEquals("cua1", bn.trigger.s("region", ""));
         assertTrue(bn.perPlayer);
         assertEquals(20, bn.delay);
+        assertEquals("ruongchia", bn.group);
+        assertEquals(2, bn.groupPick);
+        assertFalse(bn.groupRemoveBlock);
         assertEquals(1, bn.conditions.size());
         assertEquals(2, bn.actions.size());
         assertEquals("SkeletonKing", bn.actions.get(0).s("mob", ""));

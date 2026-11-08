@@ -77,6 +77,7 @@ public final class NodeEngine {
 
     /** Runs a node if its once / per-player rule and conditions allow it. */
     private boolean tryRun(Instance in, Node n, Player who) {
+        if (in.disabledNodes.contains(n.id)) return false;
         Instance.NodeState st = in.state(n.id);
         if (!n.repeat) {
             if (n.perPlayer) {
@@ -177,6 +178,90 @@ public final class NodeEngine {
         }
     }
 
+    /** Right after the paste: pick the nodes of every random group, switch the others off. */
+    public void pickGroups(Instance in) {
+        java.util.Map<String, List<Node>> groups = new java.util.HashMap<>();
+        for (Node n : in.template.nodes.values()) {
+            if (!n.group.isEmpty()) groups.computeIfAbsent(n.group.toLowerCase(Locale.ROOT), k -> new ArrayList<>()).add(n);
+        }
+        for (List<Node> list : groups.values()) {
+            int pick = 1;
+            for (Node n : list) pick = Math.max(pick, n.groupPick);
+            java.util.Collections.shuffle(list, ThreadLocalRandom.current());
+            for (int i = pick; i < list.size(); i++) {
+                Node off = list.get(i);
+                in.disabledNodes.add(off.id);
+                if (off.groupRemoveBlock) off.pos.plus(in.origin).block(in.world).setType(Material.AIR, false);
+            }
+        }
+    }
+
+    /** Every 10 ticks: hold-area triggers (someone must stay inside the region long enough). */
+    public void tickHold(Instance in) {
+        if (in.phase != Instance.Phase.RUNNING) return;
+        List<Player> alive = in.alivePlayers();
+        String text = "";
+        for (Node n : new ArrayList<>(in.template.nodes.values())) {
+            if (n.triggerType() != TriggerType.HOLD_AREA || in.disabledNodes.contains(n.id)) continue;
+            Instance.NodeState st = in.state(n.id);
+            if (st.fired && !n.repeat) continue;
+            boolean allowed = true;
+            for (Element c : n.conditions) if (!check(in, c)) allowed = false;
+            if (!allowed) continue;
+            Box rel = in.template.regions.get(n.trigger.s("region", ""));
+            if (rel == null) {
+                warnOnce(in, "Node " + n.id + ": không có vùng " + n.trigger.s("region", ""));
+                continue;
+            }
+            Box box = in.absolute(rel);
+            int inside = 0;
+            for (Player p : alive) if (box.contains(p.getLocation())) inside++;
+            int need = Math.max(1, n.trigger.i("players", 1));
+            int total = Math.max(1, n.trigger.i("seconds", 30)) * 20;
+            if (inside >= need) st.counter += 10;
+            else if (n.trigger.s("mode", "reset").equals("reset")) st.counter = 0;
+            if (n.trigger.b("border", true)) border(in, box, inside >= need);
+            int secs = Math.min(total, st.counter) / 20;
+            if (st.counter > 0 || inside > 0) {
+                String line = plugin.messages().text(inside >= need ? "dungeon.hold-progress" : "dungeon.hold-paused",
+                        "seconds", String.valueOf(secs), "total", String.valueOf(total / 20),
+                        "bar", bar(secs, total / 20), "inside", String.valueOf(inside), "need", String.valueOf(need));
+                for (Player p : in.onlineMembers()) p.sendActionBar(Text.component(line));
+                text = secs + "/" + total / 20;
+            }
+            if (st.counter >= total) {
+                st.counter = 0;
+                tryRun(in, n, null);
+            }
+        }
+        in.holdText = text;
+    }
+
+    private static String bar(int done, int total) {
+        int filled = total <= 0 ? 20 : Math.min(20, done * 20 / total);
+        return Text.color("&#7CFC9A" + "|".repeat(filled) + "&8" + "|".repeat(20 - filled));
+    }
+
+    private void border(Instance in, Box b, boolean active) {
+        org.bukkit.Particle.DustOptions dust = new org.bukkit.Particle.DustOptions(
+                active ? org.bukkit.Color.fromRGB(0x7CFC9A) : org.bukkit.Color.fromRGB(0xFFD166), 1.2f);
+        double y = b.min().y() + 0.2;
+        double x0 = b.min().x(), x1 = b.max().x() + 1, z0 = b.min().z(), z1 = b.max().z() + 1;
+        List<Player> viewers = in.viewers();
+        for (double x = x0; x <= x1; x += 0.5) {
+            for (Player p : viewers) {
+                p.spawnParticle(org.bukkit.Particle.DUST, x, y, z0, 1, 0, 0, 0, 0, dust);
+                p.spawnParticle(org.bukkit.Particle.DUST, x, y, z1, 1, 0, 0, 0, 0, dust);
+            }
+        }
+        for (double z = z0; z <= z1; z += 0.5) {
+            for (Player p : viewers) {
+                p.spawnParticle(org.bukkit.Particle.DUST, x0, y, z, 1, 0, 0, 0, 0, dust);
+                p.spawnParticle(org.bukkit.Particle.DUST, x1, y, z, 1, 0, 0, 0, 0, dust);
+            }
+        }
+    }
+
     /** Every second: timer triggers. */
     public void tickTimers(Instance in) {
         if (in.phase != Instance.Phase.RUNNING) return;
@@ -240,12 +325,14 @@ public final class NodeEngine {
         if (in.phase != Instance.Phase.RUNNING) return false;
         var rel = in.toRelative(com.dex.boxphoban.util.BlockPos.of(block));
         Node n = in.template.nodeAt(rel);
+        if (n != null && in.disabledNodes.contains(n.id)) n = null;
         if (n != null && n.triggerType() != TriggerType.INTERACT && n.triggerType() != TriggerType.KEY_USE) n = null;
         if (n == null) {
             // a node may listen on a whole region (e.g. every block of a locked gate)
             for (Node c : in.template.nodes.values()) {
                 TriggerType ct = c.triggerType();
                 if (ct != TriggerType.INTERACT && ct != TriggerType.KEY_USE) continue;
+                if (in.disabledNodes.contains(c.id)) continue;
                 Box r = in.template.regions.get(c.trigger.s("region", ""));
                 if (r != null && r.contains(rel)) {
                     n = c;

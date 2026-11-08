@@ -172,6 +172,7 @@ public final class InstanceManager {
             return;
         }
         in.sharedLives = t.livesMode == DungeonTemplate.LivesMode.SHARED ? t.lives : 0;
+        plugin.engine().pickGroups(in);
         plugin.walls().prepare(in);
         in.phase = Instance.Phase.RUNNING;
         in.startMs = System.currentTimeMillis();
@@ -290,6 +291,7 @@ public final class InstanceManager {
         for (Instance in : new ArrayList<>(instances.values())) {
             if (in.phase != Instance.Phase.RUNNING) continue;
             plugin.engine().tickArea(in);
+            plugin.engine().tickHold(in);
             plugin.walls().tick(in);
             Box allowed = in.box.grow(margin);
             for (Player p : in.viewers()) {

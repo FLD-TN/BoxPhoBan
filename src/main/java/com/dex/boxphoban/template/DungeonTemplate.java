@@ -221,6 +221,9 @@ public final class DungeonTemplate {
             node.repeat = n.getBoolean("repeat", false);
             node.perPlayer = n.getBoolean("per-player", false);
             node.delay = Math.max(0, n.getInt("delay", 0));
+            node.group = n.getString("group", "");
+            node.groupPick = Math.max(1, n.getInt("group-pick", 1));
+            node.groupRemoveBlock = n.getBoolean("group-remove-block", true);
             readList(n, "conditions", node.conditions);
             readList(n, "actions", node.actions);
             nodes.put(k, node);
@@ -277,6 +280,11 @@ public final class DungeonTemplate {
             c.set(p + "repeat", n.repeat);
             c.set(p + "per-player", n.perPlayer);
             c.set(p + "delay", n.delay);
+            if (!n.group.isEmpty()) {
+                c.set(p + "group", n.group);
+                c.set(p + "group-pick", n.groupPick);
+                c.set(p + "group-remove-block", n.groupRemoveBlock);
+            }
             c.set(p + "conditions", toMaps(n.conditions));
             c.set(p + "actions", toMaps(n.actions));
         }

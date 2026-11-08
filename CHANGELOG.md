@@ -17,6 +17,10 @@ Tường chuyển động và khoá phòng.
 - Paste phòng bỏ qua block không khí (nhanh hơn nhiều với map rộng).
 - Trigger **Tương tác** và **Dùng chìa** có thêm `region`: bấm block nào trong vùng cũng được (ví dụ cả bức cổng).
   Nhận chìa thì cả đội được báo ai đang giữ chìa.
+- **Nhóm ngẫu nhiên** cho node: mỗi lượt giữ ngẫu nhiên K node cùng nhóm, các node khác tắt và block của chúng bị gỡ
+  (rương chìa đổi chỗ mỗi lượt).
+- Trigger **Giữ vị trí**: đứng trong vùng đủ số giây (về 0 hoặc tạm dừng khi rời vùng), viền hạt + tiến độ actionbar,
+  placeholder `%boxphoban_hold%`.
 - Hành động **Đổi mục tiêu**: đổi dòng nhiệm vụ trên scoreboard giữa chừng trong một ải (tự về mục tiêu của ải khi
   chuyển ải).
 
