@@ -171,6 +171,7 @@ public final class BoxPhoBan extends JavaPlugin {
             getLogger().log(Level.WARNING, "shutdown editor", e);
         }
         if (rooms != null) rooms.shutdown();
+        if (maps != null) maps.clearCache();
         if (db != null) db.close();
     }
 

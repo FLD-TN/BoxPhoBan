@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.1 (2026-11-09)
+
+Vào phó bản nhanh hơn, đỡ tốn CPU lúc chuẩn bị.
+
+- Paste/dọn ô phó bản không ghi lịch sử undo của FAWE nữa (trước đây FAWE nén từng block đã đổi xuống đĩa, đây là
+  phần tốn CPU nhất lúc chờ), tắt cập nhật block lân cận/vật lý khi paste.
+- Dọn ô (đặt về không khí khi kết thúc) không tính lại ánh sáng; lần paste sau tự tính lại.
+- Schematic được giữ trong RAM sau lần đọc đầu, các lượt sau không phải đọc + giải nén file lại
+  (tự đọc lại khi file đổi, ví dụ sau khi lưu trong editor).
+- Log thời gian paste nếu quá 1 giây (`Paste <file>: đọc Xms, đặt block Yms`) để dễ đo.
+
 ## 0.2.0 (2026-11-08)
 
 Tường chuyển động và khoá phòng.

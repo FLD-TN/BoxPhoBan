@@ -2,6 +2,7 @@ package com.dex.boxphoban.world;
 
 import com.dex.boxphoban.util.BlockPos;
 import com.dex.boxphoban.util.Box;
+import com.fastasyncworldedit.core.extent.processor.lighting.RelightMode;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.LocalSession;
@@ -30,6 +31,8 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /** Schematic save / paste / clear through the WorldEdit API (FAWE runs it off the main thread). */
@@ -53,8 +56,49 @@ public final class MapService {
         return new CuboidRegion(BukkitAdapter.adapt(w), bv(b.min()), bv(b.max()));
     }
 
+    /** Plain session (editor import / save): normal history-less WorldEdit behaviour. */
     private static EditSession session(World w) {
-        return WorldEdit.getInstance().newEditSessionBuilder().world(BukkitAdapter.adapt(w)).limitUnlimited().build();
+        return WorldEdit.getInstance().newEditSessionBuilder().world(BukkitAdapter.adapt(w)).limitUnlimited()
+                .changeSetNull().build();
+    }
+
+    /**
+     * Session for instance paste / clear: no undo history (FAWE otherwise compresses every changed block to disk),
+     * no neighbour/physics updates, no memory checks. {@code relight} false skips the lighting pass (used for
+     * clearing to air: the slot is relit by the next paste anyway).
+     */
+    private static EditSession fastSession(World w, boolean relight) {
+        return WorldEdit.getInstance().newEditSessionBuilder().world(BukkitAdapter.adapt(w)).limitUnlimited()
+                .changeSetNull().fastMode(true).checkMemory(false)
+                .relightMode(relight ? RelightMode.OPTIMAL : RelightMode.NONE).build();
+    }
+
+    /** Parsed schematics kept in memory: file path -> (lastModified, clipboard). */
+    private record Cached(long modified, long length, Clipboard clip) {
+    }
+
+    private final Map<String, Cached> cache = new ConcurrentHashMap<>();
+
+    private Clipboard load(File file) throws Exception {
+        String key = file.getAbsolutePath();
+        long mod = file.lastModified(), len = file.length();
+        Cached c = cache.get(key);
+        if (c != null && c.modified == mod && c.length == len) return c.clip;
+        ClipboardFormat fmt = ClipboardFormats.findByFile(file);
+        if (fmt == null) throw new IllegalStateException("unknown schematic format " + file);
+        Clipboard clip;
+        try (ClipboardReader reader = fmt.getReader(new FileInputStream(file))) {
+            clip = reader.read();
+        }
+        // the replaced clipboard is not closed: a paste on another thread may still be reading it
+        cache.put(key, new Cached(mod, len, clip));
+        return clip;
+    }
+
+    /** Drops cached schematics (plugin disable). */
+    public void clearCache() {
+        cache.values().forEach(c -> closeQuietly(c.clip));
+        cache.clear();
     }
 
     private void async(Runnable work, Consumer<Throwable> done) {
@@ -112,20 +156,21 @@ public final class MapService {
      */
     public void paste(File file, World w, BlockPos to, Consumer<Throwable> done) {
         async(() -> {
-            ClipboardFormat fmt = ClipboardFormats.findByFile(file);
-            if (fmt == null) throw new IllegalStateException("unknown schematic format " + file);
-            Clipboard clip = null;
-            try (ClipboardReader reader = fmt.getReader(new FileInputStream(file))) {
-                clip = reader.read();
-                try (EditSession es = session(w)) {
+            long t0 = System.currentTimeMillis();
+            try {
+                Clipboard clip = load(file);
+                long t1 = System.currentTimeMillis();
+                try (EditSession es = fastSession(w, true)) {
                     Operation op = new ClipboardHolder(clip).createPaste(es).to(bv(to))
-                            .ignoreAirBlocks(true).copyEntities(false).build();
+                            .ignoreAirBlocks(true).copyEntities(false).copyBiomes(false).build();
                     Operations.complete(op);
+                }
+                long t2 = System.currentTimeMillis();
+                if (t2 - t0 > 1000) {
+                    plugin.getLogger().info("Paste " + file.getName() + ": đọc " + (t1 - t0) + "ms, đặt block " + (t2 - t1) + "ms");
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
-            } finally {
-                closeQuietly(clip);
             }
         }, done);
     }
@@ -133,7 +178,7 @@ public final class MapService {
     /** Sets every block of {@code absolute} to air. */
     public void clear(World w, Box absolute, Consumer<Throwable> done) {
         async(() -> {
-            try (EditSession es = session(w)) {
+            try (EditSession es = fastSession(w, false)) {
                 es.setBlocks((Region) region(w, absolute), BlockTypes.AIR.getDefaultState());
             }
         }, done);
