@@ -1,17 +1,31 @@
 # BoxPhoBan
 
-Phó bản theo phòng cho BoxPvP. Paper 1.21.1, Java 21.
+Phó bản theo phòng cho server BoxPvP. Người chơi lập phòng, rủ bạn, chọn độ khó rồi vào một bản sao riêng của map để
+qua từng ải: đánh quái MythicMobs, giữ vị trí, tìm chìa mở cổng, đánh boss. Admin dựng map và toàn bộ logic ngay trong
+game, không cần viết script.
 
-- Bắt buộc: FastAsyncWorldEdit, MythicMobs 5.13
-- Tuỳ chọn: PlaceholderAPI (scoreboard), Vault (tiền), BoxCore (gem), TAB
-- Build: `./gradlew --offline build` ra `build/libs/BoxPhoBan-<version>.jar`
-- Jar cần đặt vào `libs/`: xem mục Build bên dưới
+Paper 1.21.1, Java 21. Cần MythicMobs 5.13 và FastAsyncWorldEdit. PlaceholderAPI (scoreboard), Vault (phí vào),
+BoxCore (Gem), DecentHolograms (holo giữ vị trí) và BoxPet (tính kill của pet) không bắt buộc.
+
+## Người chơi thấy gì
+
+- `/pb` mở danh sách phó bản. Tạo phòng, mời người hoặc mở công khai, chủ phòng chọn độ khó rồi bắt đầu.
+- Mỗi phòng chạy trên một ô riêng trong world void `boxphoban` (plugin tự tạo), map được paste từ bản gốc mỗi lượt.
+- Điều kiện vào đặt theo từng phó bản: vé (chủ phòng trả hoặc mỗi người trả), phí $, quyền, phải clear phó bản khác
+  trước, cooldown (theo phút, ngày hoặc tuần), giới hạn lượt mỗi ngày.
+- Mạng chung cả phòng, mạng riêng hoặc không có mạng. Chết thì giữ đồ, chờ rồi hồi sinh ở checkpoint; hết mạng thành
+  khán giả trong phạm vi map.
+- Độ khó đổi level MythicMobs, nhân máu / sát thương của quái, giới hạn thời gian và bảng thưởng.
+- Trong phó bản: chặn lệnh ngoài whitelist, chặn vứt đồ, PvP, mở rương lạ và tương tác người chơi.
+- Thoát game giữa chừng thì có `disconnect.grace-seconds` để vào lại đúng checkpoint. Server sập thì lần sau vào được
+  đưa về chỗ cũ và trạng thái cũ; ô lưới bị bỏ dở được dọn khi khởi động.
+- Thưởng chưa nhận được (túi đầy) nằm trong `/pb rewards`.
 
 ## Cài đặt
 
-1. Bỏ jar vào `plugins/`, khởi động server. Plugin tự tạo world void `boxphoban`.
-2. Thêm scoreboard phó bản vào `plugins/TAB/config.yml` (placeholder `%boxphoban_...%`), `/tab reload`.
-3. Sửa `config.yml` (whitelist lệnh, giới hạn phòng, thời gian chờ disconnect).
+1. Bỏ jar vào `plugins/`, khởi động server.
+2. Thêm scoreboard phó bản vào TAB bằng các placeholder `%boxphoban_...%` bên dưới.
+3. Sửa `config.yml`: whitelist lệnh, số phòng tối đa (`limits.max-instances`), thời gian chờ khi thoát game.
 
 ## Dựng một phó bản
 
@@ -83,50 +97,49 @@ thua, thắng, hết giờ, thoát game hay server sập.
 
 ## Lệnh
 
-Người chơi `/pb`: `create`, `join`, `invite`, `accept`, `deny`, `kick`, `leader`, `public`, `start`, `leave`, `room`, `rewards`.
+| Lệnh | Mô tả |
+|---|---|
+| `/pb` | Danh sách phó bản |
+| `/pb create`, `/pb join`, `/pb room` | Tạo phòng, vào phòng, mở menu phòng |
+| `/pb invite <người>`, `/pb accept`, `/pb deny` | Mời, nhận, từ chối lời mời |
+| `/pb kick <người>`, `/pb leader <người>`, `/pb public` | Chủ phòng: kick, chuyển chủ, bật / tắt công khai |
+| `/pb start`, `/pb leave` | Bắt đầu, rời phòng hoặc phó bản |
+| `/pb rewards` | Kho thưởng chờ nhận |
+| `/pba create\|edit <id>`, `/pba exit` | Tạo, vào, rời editor |
+| `/pba import <id>`, `/pba bounds`, `/pba pos`, `/pba save` | Lấy map từ vùng chọn WorldEdit, đặt khung, lưu map |
+| `/pba region add\|remove <tên>`, `/pba region wall <vùng> open\|closed` | Vùng cho cửa và trigger |
+| `/pba info <id>`, `/pba list`, `/pba test <id> <độ khó>` | Kiểm tra, liệt kê, chơi thử một mình |
+| `/pba stop`, `/pba watch` | Dừng một phòng đang chạy, vào xem |
+| `/pba ticket give`, `/pba reward additem`, `/pba loot additem` | Vé, thêm item đang cầm vào bảng thưởng / loot |
+| `/pba resetcooldown`, `/pba delete <id>`, `/pba reload` | Xoá cooldown, xoá phó bản, đọc lại file |
 
-Admin `/pba`: `create`, `edit`, `exit`, `import`, `bounds`, `region`, `save`, `info`, `test`, `list`, `stop`, `watch`,
-`ticket give`, `reward additem`, `loot additem`, `resetcooldown`, `delete`, `reload`.
-
-Quyền: `boxphoban.use` (mặc định ai cũng có), `boxphoban.admin`, `boxphoban.bypass.commands`, `boxphoban.bypass.cooldown`,
+Quyền: `boxphoban.use` (mọi người), `boxphoban.admin` (op), `boxphoban.bypass.commands`, `boxphoban.bypass.cooldown`,
 `boxphoban.bypass.ticket`.
 
 ## Placeholder
 
-`%boxphoban_in%` `%boxphoban_name%` `%boxphoban_difficulty%` `%boxphoban_stage%` `%boxphoban_stage_index%`
-`%boxphoban_stage_total%` `%boxphoban_objective%` `%boxphoban_time_left%` `%boxphoban_time_elapsed%` `%boxphoban_lives%`
-`%boxphoban_players_alive%` `%boxphoban_players%` `%boxphoban_mobs_left%` `%boxphoban_hold%` `%boxphoban_hold_percent%` `%boxphoban_hold_bar%` `%boxphoban_hold_name%` `%boxphoban_state%` `%boxphoban_in_room%`
-`%boxphoban_room_dungeon%` `%boxphoban_cooldown_<id>%` `%boxphoban_clears_<id>%` `%boxphoban_best_<id>%`
+| Placeholder | Giá trị |
+|---|---|
+| `%boxphoban_in%`, `%boxphoban_state%`, `%boxphoban_in_room%`, `%boxphoban_room_dungeon%` | Đang ở trong phó bản / phòng nào |
+| `%boxphoban_name%`, `%boxphoban_difficulty%` | Tên phó bản, độ khó |
+| `%boxphoban_stage%`, `%boxphoban_stage_index%`, `%boxphoban_stage_total%`, `%boxphoban_objective%` | Ải hiện tại và mục tiêu |
+| `%boxphoban_time_left%`, `%boxphoban_time_elapsed%` | Thời gian |
+| `%boxphoban_lives%`, `%boxphoban_players_alive%`, `%boxphoban_players%`, `%boxphoban_mobs_left%` | Mạng, người còn sống, quái còn lại |
+| `%boxphoban_hold%`, `%boxphoban_hold_percent%`, `%boxphoban_hold_bar%`, `%boxphoban_hold_name%` | Tiến độ giữ vị trí |
+| `%boxphoban_cooldown_<id>%`, `%boxphoban_clears_<id>%`, `%boxphoban_best_<id>%` | Cooldown, số lần clear, thời gian tốt nhất |
 
 ## File
 
 | File | Ai sửa | Nội dung |
 |---|---|---|
-| `config.yml` | admin | cài đặt chung |
-| `messages.yml`, `gui.yml` | admin | chữ (key thiếu lấy mặc định trong jar) |
-| `tickets.yml`, `rewards.yml`, `loot.yml` | admin, lệnh additem | vé, thưởng, loot |
-| `dungeons/<id>/dungeon.yml` | admin | cài đặt phó bản, plugin không ghi đè |
-| `dungeons/<id>/nodes.yml`, `map.schem` | editor | logic + map |
-| `data/boxphoban.db` | plugin | lượt clear, best time, cooldown, kho thưởng chờ |
-| `data/sessions/*.yml` | plugin | snapshot người chơi đang ở trong phó bản (xoá sau khi trả trạng thái) |
-| `data/slots.yml` | plugin | ô đang dùng, để dọn sau khi server sập |
-
-## Kiểm tra trong game (chưa test live)
-
-- [ ] Tạo phòng, mời, đồng ý, kick, chuyển chủ phòng, công khai / riêng tư, đổi độ khó
-- [ ] Vé CREATOR / EVERY_MEMBER / miễn phí; phí $; cooldown TIMER / DAILY; daily-limit
-- [ ] Hết ô trống (giảm `limits.max-instances` về 1, mở 2 phòng)
-- [ ] Paste map, người chơi vào điểm bắt đầu, scoreboard TAB hiện đúng
-- [ ] Spawn mob theo độ khó (máu x, sát thương x), Dọn sạch đợt mở cửa, checkpoint
-- [ ] Chết: giữ đồ, chờ hồi sinh rồi về checkpoint; hết mạng thành khán giả, không bay ra khỏi khung, không dùng menu spectator sang người ngoài
-- [ ] `/pb leave` khi đang là khán giả: về đúng chỗ cũ, gamemode cũ
-- [ ] Thoát game giữa chừng: vào lại trong thời gian chờ thì quay lại checkpoint; quá thời gian thì bị loại, lần sau vào được đưa về chỗ cũ
-- [ ] Tắt server khi đang trong phó bản: lần sau vào được đưa về chỗ cũ, ô lưới được dọn khi khởi động
-- [ ] Lệnh bị chặn (kể cả `/trade`), vứt đồ bị chặn, shift + chuột phải người chơi bị chặn
-- [ ] Pet BoxPet đi theo, mob do pet giết tính cho chủ, pet ẩn khi chủ là khán giả
-- [ ] Rương thưởng: loot riêng, chỉ nhận khi thắng; rời giữa chừng mất
-- [ ] Thắng: thưởng + thưởng lần đầu + GUI kết quả, túi đầy thì vào `/pb rewards`
-- [ ] `/pba watch`, `/pba stop`, `/pba list`
+| `config.yml` | admin | Cài đặt chung |
+| `messages.yml`, `gui.yml` | admin | Chữ (khoá thiếu lấy mặc định trong jar) |
+| `tickets.yml`, `rewards.yml`, `loot.yml` | admin, lệnh additem | Vé, thưởng, loot |
+| `dungeons/<id>/dungeon.yml` | admin | Cài đặt phó bản, plugin không ghi đè |
+| `dungeons/<id>/nodes.yml`, `map.schem` | editor | Logic và map |
+| `data/boxphoban.db` | plugin | Lượt clear, thời gian tốt nhất, cooldown, thưởng chờ |
+| `data/sessions/*.yml` | plugin | Trạng thái người chơi đang trong phó bản, xoá sau khi trả lại |
+| `data/slots.yml` | plugin | Ô đang dùng, để dọn sau khi server sập |
 
 ## Build
 
@@ -134,10 +147,10 @@ Quyền: `boxphoban.use` (mặc định ai cũng có), `boxphoban.admin`, `boxph
 ./gradlew build
 ```
 
-Repo chỉ có mã nguồn, không chứa file jar nào (trừ `gradle/wrapper/gradle-wrapper.jar` chuẩn của Gradle).
-Trước khi build, tự đặt các jar sau vào thư mục `libs/` ở gốc repo:
+Ra file `build/libs/BoxPhoBan-<version>.jar`. Repo chỉ chứa mã nguồn, không có jar nào ngoài
+`gradle/wrapper/gradle-wrapper.jar` của Gradle. Trước khi build, đặt vào thư mục `libs/`:
 
-- `DecentHolograms-2.10.1.jar` - jar plugin DecentHolograms
-- `FastAsyncWorldEdit-2.13.2.jar` - jar plugin FastAsyncWorldEdit (đổi tên cho đúng)
-- `MythicMobs-5.13.0.jar` - jar plugin MythicMobs (bản free)
-- `boxcore-api-1.4.0.jar` - build từ [BoxCore](https://github.com/FLD-TN/BoxCore) (`boxcore-api/build/libs/`)
+- `MythicMobs-5.13.0.jar`: jar plugin MythicMobs (bản free)
+- `FastAsyncWorldEdit-2.13.2.jar`: jar plugin FastAsyncWorldEdit (đổi tên cho khớp)
+- `DecentHolograms-2.10.1.jar`: jar plugin DecentHolograms
+- `boxcore-api-1.4.0.jar`: build từ [BoxCore](https://github.com/FLD-TN/BoxCore) (`boxcore-api/build/libs/`)
