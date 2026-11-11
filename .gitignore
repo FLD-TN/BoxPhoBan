@@ -10,3 +10,12 @@ libs/FastAsyncWorldEdit-*.jar
 # paid builds (BreadBuilds ToS: no redistribution), never commit
 Schem_And_Build/
 libs/DecentHolograms-*.jar
+
+# Không đưa lên repo public: jar bên thứ ba, file diff, ghi chú nội bộ
+libs/
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.diff
+*SPEC*.md
+__pycache__/
+*.pyc

@@ -5,14 +5,12 @@ Phó bản theo phòng cho BoxPvP. Paper 1.21.1, Java 21.
 - Bắt buộc: FastAsyncWorldEdit, MythicMobs 5.13
 - Tuỳ chọn: PlaceholderAPI (scoreboard), Vault (tiền), BoxCore (gem), TAB
 - Build: `./gradlew --offline build` ra `build/libs/BoxPhoBan-<version>.jar`
-- `libs/` cần 2 jar không commit: `MythicMobs-5.13.0.jar` (copy từ `MyBoxMobs/libs`) và
-  `FastAsyncWorldEdit-2.13.2.jar` (jar FAWE của server, đổi tên)
-- Spec: [PHOBAN_SPEC.md](PHOBAN_SPEC.md)
+- Jar cần đặt vào `libs/`: xem mục Build bên dưới
 
 ## Cài đặt
 
 1. Bỏ jar vào `plugins/`, khởi động server. Plugin tự tạo world void `boxphoban`.
-2. Dán khối scoreboard trong [TAB_scoreboard_phoban.yml](TAB_scoreboard_phoban.yml) vào `plugins/TAB/config.yml`, `/tab reload`.
+2. Thêm scoreboard phó bản vào `plugins/TAB/config.yml` (placeholder `%boxphoban_...%`), `/tab reload`.
 3. Sửa `config.yml` (whitelist lệnh, giới hạn phòng, thời gian chờ disconnect).
 
 ## Dựng một phó bản
@@ -129,3 +127,17 @@ Quyền: `boxphoban.use` (mặc định ai cũng có), `boxphoban.admin`, `boxph
 - [ ] Rương thưởng: loot riêng, chỉ nhận khi thắng; rời giữa chừng mất
 - [ ] Thắng: thưởng + thưởng lần đầu + GUI kết quả, túi đầy thì vào `/pb rewards`
 - [ ] `/pba watch`, `/pba stop`, `/pba list`
+
+## Build
+
+```
+./gradlew build
+```
+
+Repo chỉ có mã nguồn, không chứa file jar nào (trừ `gradle/wrapper/gradle-wrapper.jar` chuẩn của Gradle).
+Trước khi build, tự đặt các jar sau vào thư mục `libs/` ở gốc repo:
+
+- `DecentHolograms-2.10.1.jar` - jar plugin DecentHolograms
+- `FastAsyncWorldEdit-2.13.2.jar` - jar plugin FastAsyncWorldEdit (đổi tên cho đúng)
+- `MythicMobs-5.13.0.jar` - jar plugin MythicMobs (bản free)
+- `boxcore-api-1.4.0.jar` - build từ [BoxCore](https://github.com/FLD-TN/BoxCore) (`boxcore-api/build/libs/`)
